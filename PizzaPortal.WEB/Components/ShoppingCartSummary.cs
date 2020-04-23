@@ -26,7 +26,7 @@ namespace PizzaPortal.WEB.Components
             var viewModel = new ShoppingCartViewModel
             {
                 Items = this._mapper.Map<List<ItemShoppingCartViewModel>>(items.Result),
-                ShoppingCartTotal = _shoppingCartService.GetShoppingCartTotal()
+                ShoppingCartTotal = _shoppingCartService.GetShoppingCartTotalAsync().Result
             };
 
             return View(viewModel);

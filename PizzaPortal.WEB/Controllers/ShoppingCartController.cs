@@ -29,7 +29,7 @@ namespace PizzaPortal.WEB.Controllers
             var shoppingCartViewModel = new ShoppingCartViewModel
             {
                 Items = this._mapper.Map<List<ItemShoppingCartViewModel>>(items),
-                ShoppingCartTotal = _shoppingCartService.GetShoppingCartTotal()
+                ShoppingCartTotal = await _shoppingCartService.GetShoppingCartTotalAsync()
             };
             return View(shoppingCartViewModel);
         }

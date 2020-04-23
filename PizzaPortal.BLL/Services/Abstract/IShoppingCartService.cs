@@ -13,6 +13,6 @@ namespace PizzaPortal.BLL.Services.Abstract
         Task AddToCartAsync(PizzaDTO pizza, int amount);
         Task<int> RemoveFromCartAsync(PizzaDTO pizza);
         Task ClearCartAsync();
-        decimal GetShoppingCartTotal();
+        Task<decimal> GetShoppingCartTotalAsync();
     }
 }

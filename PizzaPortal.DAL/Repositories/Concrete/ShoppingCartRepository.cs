@@ -39,7 +39,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
 
         public async Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsAsync()
         {
-            return await this._context.ShoppingCartItems
+            return ShoppingCartItems ?? await this._context.ShoppingCartItems
                                 .Where(x => x.ShoppingCartId == ShoppingCartId)
                                 .Include(x => x.Pizza)
                                 .ToListAsync();
@@ -102,10 +102,10 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             await this._context.SaveChangesAsync();
         }
 
-        public decimal GetShoppingCartTotal()
+        public async Task<decimal> GetShoppingCartTotalAsync()
         {
-            var total = _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId)
-                .Select(c => c.Pizza.Price * c.Amount).Sum();
+            var total = await _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId)
+                .Select(c => c.Pizza.Price * c.Amount).SumAsync();
             return total;
         }
     }

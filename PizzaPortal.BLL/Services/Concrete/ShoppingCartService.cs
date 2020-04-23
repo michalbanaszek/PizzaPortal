@@ -39,9 +39,9 @@ namespace PizzaPortal.BLL.Services.Concrete
             return await this._shoppingCartRepository.RemoveFromCartAsync(pizza);
         }
 
-        public decimal GetShoppingCartTotal()
+        public async Task<decimal> GetShoppingCartTotalAsync()
         {
-            return this._shoppingCartRepository.GetShoppingCartTotal();
+            return await this._shoppingCartRepository.GetShoppingCartTotalAsync();
         }
     }
 }
