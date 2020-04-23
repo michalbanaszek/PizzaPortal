@@ -31,7 +31,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                  
+                        </li>
                         <li class="nav-item dropdown">
                             @await Component.InvokeAsync("CategoryMenu")
                         </li>
@@ -46,15 +46,13 @@
             </div>
         </nav>
     </header>
-    <div class="container">     
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container body-content">
+        @RenderBody()
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - PizzaPortal.WEB
+            &copy; 2020 - PizzaPortal
         </div>
     </footer>
 

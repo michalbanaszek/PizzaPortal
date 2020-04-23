@@ -17,5 +17,7 @@ namespace PizzaPortal.Migrations
         public DbSet<PizzaDTO> Pizzas { get; set; }
         public DbSet<CategoryDTO> Categories { get; set; }
         public DbSet<ShoppingCartItemDTO> ShoppingCartItems { get; set; }
+        public DbSet<OrderDTO> Orders { get; set; }
+        public DbSet<OrderDetailDTO> OrderDetails { get; set; }
     }
 }

@@ -39,12 +39,13 @@ namespace PizzaPortal.WEB
             services.AddScoped<IPizzaRepository, PizzaRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IService<BaseModelDTO>, Service<BaseModelDTO>>();
             services.AddScoped<IPizzaService, PizzaService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderService, OrderService>();
 
-            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
