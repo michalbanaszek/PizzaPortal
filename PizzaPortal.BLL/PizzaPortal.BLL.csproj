@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PizzaPortal.DAL\PizzaPortal.DAL.csproj" />
+    <ProjectReference Include="..\PizzaPortal.Model\PizzaPortal.Model.csproj" />
+  </ItemGroup>
+
+</Project>
