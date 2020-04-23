@@ -1,0 +1,11 @@
+﻿@model ShoppingCartViewModel
+
+@if (Model.Items.Any())
+{
+    <li>
+        <a asp-controller="ShoppingCart" asp-action="Index">
+            <span><i class="fa fa-shopping-cart"></i></span>
+            <span>@Model.Items.Count</span>
+        </a>
+    </li>
+}
