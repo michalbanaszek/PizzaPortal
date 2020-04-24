@@ -2,10 +2,8 @@
 
 @if (Model.Items.Any())
 {
-    <li>
-        <a asp-controller="ShoppingCart" asp-action="Index">
-            <span><i class="fa fa-shopping-cart"></i></span>
-            <span>@Model.Items.Count</span>
-        </a>
-    </li>
+    <a class="nav-link text-info" asp-controller="ShoppingCart" asp-action="Index">
+        <span><i class="fa fa-shopping-cart"></i></span>
+        <span class="badge badge-info">@Model.Items.Sum(x => x.Amount)</span>      
+    </a>
 }

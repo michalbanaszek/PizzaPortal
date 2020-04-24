@@ -40,11 +40,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="Index">Contact</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             @await Component.InvokeAsync("ShoppingCartSummary")
                         </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
