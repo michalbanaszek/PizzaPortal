@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,12 +38,15 @@ namespace PizzaPortal.WEB
                 options.UseSqlServer(Configuration.GetConnectionString("PizzaConnection"));
             });
 
-            services.AddScoped<IRepository<BaseModelDTO>, Repository<BaseModelDTO>>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<DataContext>();
+
+            services.AddScoped<IRepository<BaseModel>, Repository<BaseModel>>();
             services.AddScoped<IPizzaRepository, PizzaRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IService<BaseModelDTO>, Service<BaseModelDTO>>();
+            services.AddScoped<IService<BaseModel>, Service<BaseModel>>();
             services.AddScoped<IPizzaService, PizzaService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
@@ -49,9 +55,15 @@ namespace PizzaPortal.WEB
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
-        
 
-            services.AddMvc()
+
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
+                                                             .Build();
+
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
               .AddFluentValidation(conf =>
               {
@@ -59,12 +71,13 @@ namespace PizzaPortal.WEB
                   conf.RegisterValidatorsFromAssemblyContaining<Startup>();
               });
 
+            services.AddAuthentication();           
             services.AddMemoryCache();
             services.AddSession();
             services.AddAutoMapper(typeof(Startup));
 
-            
         }
+      
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider service)
@@ -81,6 +94,7 @@ namespace PizzaPortal.WEB
 
             app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -89,8 +103,6 @@ namespace PizzaPortal.WEB
             });
 
             DbInitializer.Seed(service);
-
-          
         }
     }
 }

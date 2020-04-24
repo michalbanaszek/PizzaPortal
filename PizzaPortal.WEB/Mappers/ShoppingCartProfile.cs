@@ -8,7 +8,7 @@ namespace PizzaPortal.WEB.Mappers
     {
         public ShoppingCartProfile()
         {
-            CreateMap<ShoppingCartItemDTO, ItemShoppingCartViewModel>();
+            CreateMap<ShoppingCartItem, ItemShoppingCartViewModel>();
         }
     }
 }

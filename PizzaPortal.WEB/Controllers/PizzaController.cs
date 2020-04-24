@@ -30,7 +30,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpGet]
         public async Task<ActionResult> Index(string category)
         {
-            IEnumerable<PizzaDTO> pizzas;
+            IEnumerable<Pizza> pizzas;
             string currentCategory = string.Empty;
 
             if (string.IsNullOrEmpty(category))
@@ -85,7 +85,7 @@ namespace PizzaPortal.WEB.Controllers
             {
                 try
                 {
-                    var pizza = this._mapper.Map<PizzaDTO>(viewModel);
+                    var pizza = this._mapper.Map<Pizza>(viewModel);
 
                     var result = await this._pizzaService.CreateAsync(pizza);
 
@@ -146,7 +146,7 @@ namespace PizzaPortal.WEB.Controllers
                         return View("NotFound", errorViewModel);
                     }
 
-                    var pizzatoUpdate = this._mapper.Map<PizzaDTO>(viewModel);
+                    var pizzatoUpdate = this._mapper.Map<Pizza>(viewModel);
 
                     var result = await this._pizzaService.UpdateAsync(pizzatoUpdate);
 

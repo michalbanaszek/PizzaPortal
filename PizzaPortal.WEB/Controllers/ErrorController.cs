@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PizzaPortal.Model.ViewModels.Error;
@@ -15,6 +16,7 @@ namespace PizzaPortal.WEB.Controllers
         }
 
         [Route("Error/{statusCode}")]
+        [AllowAnonymous]
         public IActionResult HttpStatusCodeHandler(int statusCode)
         {
             var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
@@ -38,6 +40,7 @@ namespace PizzaPortal.WEB.Controllers
         }
 
         [Route("Error")]
+        [AllowAnonymous]
         public IActionResult Error()
         {
             var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();

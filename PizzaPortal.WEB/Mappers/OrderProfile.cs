@@ -8,7 +8,7 @@ namespace PizzaPortal.WEB.Mappers
     {
         public OrderProfile()
         {
-            CreateMap<OrderViewModel, OrderDTO>();
+            CreateMap<OrderViewModel, Order>();
         }
     }
 }

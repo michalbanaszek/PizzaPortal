@@ -39,7 +39,7 @@ namespace PizzaPortal.WEB.Controllers
 
             if (ModelState.IsValid)
             {
-                var orders = this._mapper.Map<OrderDTO>(viewModel);
+                var orders = this._mapper.Map<Order>(viewModel);
                 await this._orderService.NewOrderAsync(orders);
 
                 await this._shoppingCartService.ClearCartAsync();

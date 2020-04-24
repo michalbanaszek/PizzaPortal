@@ -9,7 +9,7 @@ namespace PizzaPortal.WEB.Mappers
     {
         public HomeProfile()
         {
-            CreateMap<PizzaDTO, ItemPizzaViewModel>();
+            CreateMap<Pizza, ItemPizzaViewModel>();
         }
     }
 }
