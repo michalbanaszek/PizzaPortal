@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace PizzaPortal.Model.Models
 {
-    public class OrderDTO : BaseModelDTO
+    public class Order : BaseModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public List<OrderDetailDTO> OrderDetails { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
    
         public string AddressLine1 { get; set; }     
         public string AddressLine2 { get; set; }

@@ -2,9 +2,9 @@
 
 namespace PizzaPortal.Model.Models
 {
-    public class ShoppingCartItemDTO : BaseModelDTO
+    public class ShoppingCartItem : BaseModel
     {
-        public PizzaDTO Pizza { get; set; }
+        public Pizza Pizza { get; set; }
         public int Amount { get; set; }
         public string ShoppingCartId { get; set; }
     }

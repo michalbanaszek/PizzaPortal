@@ -2,10 +2,10 @@
 
 namespace PizzaPortal.Model.Models
 {
-    public class CategoryDTO : BaseModelDTO
+    public class Category : BaseModel
     {       
         public string Name { get; set; }
 
-        public virtual ICollection<PizzaDTO> Pizzas { get; set; }
+        public virtual ICollection<Pizza> Pizzas { get; set; }
     }
 }

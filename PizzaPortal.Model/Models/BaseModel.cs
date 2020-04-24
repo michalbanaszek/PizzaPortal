@@ -1,6 +1,6 @@
 ﻿namespace PizzaPortal.Model.Models
 {
-    public class BaseModelDTO
+    public class BaseModel
     {
         public string Id { get; set; }
     }
