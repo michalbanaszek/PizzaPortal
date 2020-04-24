@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Abstract
 {
-    public interface IRepository<TEntity> where TEntity : BaseModelDTO
+    public interface IRepository<TEntity> where TEntity : BaseModel
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(string id);

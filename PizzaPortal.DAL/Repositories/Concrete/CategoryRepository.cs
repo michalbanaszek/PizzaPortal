@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Concrete
 {
-    public class CategoryRepository : Repository<CategoryDTO>, ICategoryRepository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         private readonly DataContext _context;
 
@@ -15,7 +15,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             this._context = context;
         }
 
-        public async Task<CategoryDTO> GetByCategoryAsync(string category)
+        public async Task<Category> GetByCategoryAsync(string category)
         {
             return await this._context.Categories.SingleOrDefaultAsync(x => x.Name.Equals(category));
         }

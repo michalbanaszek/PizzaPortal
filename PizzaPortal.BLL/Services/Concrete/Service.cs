@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Concrete
 {
-    public class Service<TEntity> : IService<TEntity> where TEntity : BaseModelDTO
+    public class Service<TEntity> : IService<TEntity> where TEntity : BaseModel
     {
         private readonly IRepository<TEntity> _repository;
 

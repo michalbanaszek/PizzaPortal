@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace PizzaPortal.DAL.Repositories.Abstract
 {
-    public interface IPizzaRepository : IRepository<PizzaDTO>
+    public interface IPizzaRepository : IRepository<Pizza>
     {
-        IEnumerable<PizzaDTO> PreferredPizzas { get; }
-        IEnumerable<PizzaDTO> GetAllByCategory(string category);
+        IEnumerable<Pizza> PreferredPizzas { get; }
+        IEnumerable<Pizza> GetAllByCategory(string category);
     }
 }

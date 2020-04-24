@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PizzaPortal.BLL.Services.Concrete
 {
-    public class PizzaService : Service<PizzaDTO>, IPizzaService
+    public class PizzaService : Service<Pizza>, IPizzaService
     {
         private readonly IPizzaRepository _pizzaRepository;
 
@@ -14,9 +14,9 @@ namespace PizzaPortal.BLL.Services.Concrete
             this._pizzaRepository = pizzaRepository;
         }
 
-        public IEnumerable<PizzaDTO> PreferredPizzas => this._pizzaRepository.PreferredPizzas;
+        public IEnumerable<Pizza> PreferredPizzas => this._pizzaRepository.PreferredPizzas;
 
-        public IEnumerable<PizzaDTO> GetAllByCategory(string category)
+        public IEnumerable<Pizza> GetAllByCategory(string category)
         {
             return this._pizzaRepository.GetAllByCategory(category);
         }

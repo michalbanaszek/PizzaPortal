@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Abstract
 {
-    public interface IShoppingCartService : IService<ShoppingCartItemDTO>
+    public interface IShoppingCartService : IService<ShoppingCartItem>
     {
         string ShoppingCartId { get; set; }
-        List<ShoppingCartItemDTO> ShoppingCartItems { get; set; }
+        List<ShoppingCartItem> ShoppingCartItems { get; set; }
 
-        Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsAsync();
-        Task AddToCartAsync(PizzaDTO pizza, int amount);
-        Task<int> RemoveFromCartAsync(PizzaDTO pizza);
+        Task<List<ShoppingCartItem>> GetShoppingCartItemsAsync();
+        Task AddToCartAsync(Pizza pizza, int amount);
+        Task<int> RemoveFromCartAsync(Pizza pizza);
         Task ClearCartAsync();
         Task<decimal> GetShoppingCartTotalAsync();
     }

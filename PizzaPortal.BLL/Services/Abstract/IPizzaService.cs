@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace PizzaPortal.BLL.Services.Abstract
 {
-    public interface IPizzaService : IService<PizzaDTO>
+    public interface IPizzaService : IService<Pizza>
     {
-        IEnumerable<PizzaDTO> PreferredPizzas { get; }
-        IEnumerable<PizzaDTO> GetAllByCategory(string category);
+        IEnumerable<Pizza> PreferredPizzas { get; }
+        IEnumerable<Pizza> GetAllByCategory(string category);
     }
 }

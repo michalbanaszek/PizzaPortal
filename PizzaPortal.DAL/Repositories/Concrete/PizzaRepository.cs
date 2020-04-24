@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PizzaPortal.DAL.Repositories.Concrete
 {
-    public class PizzaRepository : Repository<PizzaDTO>, IPizzaRepository
+    public class PizzaRepository : Repository<Pizza>, IPizzaRepository
     {
         private readonly DataContext _context;
 
@@ -16,9 +16,9 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             this._context = context;
         }
 
-        public IEnumerable<PizzaDTO> PreferredPizzas => this._context.Pizzas.Where(x => x.IsPreferredPizza).Include(x => x.Category);
+        public IEnumerable<Pizza> PreferredPizzas => this._context.Pizzas.Where(x => x.IsPreferredPizza).Include(x => x.Category);
 
-        public IEnumerable<PizzaDTO> GetAllByCategory(string category)
+        public IEnumerable<Pizza> GetAllByCategory(string category)
         {
             return this._context.Pizzas.Where(x => x.Category.Name.Equals(category));
         }

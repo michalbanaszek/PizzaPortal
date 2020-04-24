@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Concrete
 {
-    public class OrderRepository : Repository<OrderDTO>, IOrderRepository
+    public class OrderRepository : Repository<Order>, IOrderRepository
     {
         private readonly DataContext _context;
         private readonly IShoppingCartRepository _shoppingCartRepository;
@@ -17,7 +17,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             this._shoppingCartRepository = shoppingCartRepository;
         }
 
-        public async Task NewOrderAsync(OrderDTO order)
+        public async Task NewOrderAsync(Order order)
         {
             order.OrderPlaced = DateTime.Now;
 
@@ -27,7 +27,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
 
             foreach (var item in cartItems)
             {
-                var orderDetail = new OrderDetailDTO()
+                var orderDetail = new OrderDetail()
                 {
                     OrderId = order.Id,
                     PizzaId = item.Pizza.Id,

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Concrete
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseModelDTO
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseModel
     {
         private readonly DataContext _context;
 

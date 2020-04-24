@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Concrete
 {
-    public class OrderService : Service<OrderDTO>, IOrderService
+    public class OrderService : Service<Order>, IOrderService
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -14,7 +14,7 @@ namespace PizzaPortal.BLL.Services.Concrete
             this._orderRepository = orderRepository;
         }
 
-        public async Task NewOrderAsync(OrderDTO order)
+        public async Task NewOrderAsync(Order order)
         {
             await this._orderRepository.NewOrderAsync(order);
         }

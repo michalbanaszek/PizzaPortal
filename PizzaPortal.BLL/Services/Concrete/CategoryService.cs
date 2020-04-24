@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Concrete
 {
-    public class CategoryService : Service<CategoryDTO>, ICategoryService
+    public class CategoryService : Service<Category>, ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
 
@@ -14,7 +14,7 @@ namespace PizzaPortal.BLL.Services.Concrete
             this._categoryRepository = categoryRepository;
         }
 
-        public async Task<CategoryDTO> GetByCategoryAsync(string category)
+        public async Task<Category> GetByCategoryAsync(string category)
         {
             return await this.GetByCategoryAsync(category);
         }

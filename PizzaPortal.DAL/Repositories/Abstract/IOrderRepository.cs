@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Abstract
 {
-    public interface IOrderRepository : IRepository<OrderDTO>
+    public interface IOrderRepository : IRepository<Order>
     {
-        Task NewOrderAsync(OrderDTO order);
+        Task NewOrderAsync(Order order);
     }
 }

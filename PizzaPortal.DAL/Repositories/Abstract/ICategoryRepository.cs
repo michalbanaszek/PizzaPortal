@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Abstract
 {
-    public interface ICategoryRepository : IRepository<CategoryDTO>
+    public interface ICategoryRepository : IRepository<Category>
     {
-        Task<CategoryDTO> GetByCategoryAsync(string category);
+        Task<Category> GetByCategoryAsync(string category);
     }
 }

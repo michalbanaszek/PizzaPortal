@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Abstract
 {
-    public interface IService<TEntity> where TEntity : BaseModelDTO
+    public interface IService<TEntity> where TEntity : BaseModel
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(string id);

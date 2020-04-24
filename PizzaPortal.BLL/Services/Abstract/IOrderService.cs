@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Abstract
 {
-    public interface IOrderService : IService<OrderDTO>
+    public interface IOrderService : IService<Order>
     {
-        Task NewOrderAsync(OrderDTO order);
+        Task NewOrderAsync(Order order);
     }
 }

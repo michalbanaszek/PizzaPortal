@@ -21,7 +21,7 @@ namespace PizzaPortal.Migrations.Initializer
             if (!context.Pizzas.Any())
             {
                 context.AddRange(
-                     new PizzaDTO
+                     new Pizza
                      {
                          Name = "Pizza 1",
                          Price = 7.95M,
@@ -29,7 +29,7 @@ namespace PizzaPortal.Migrations.Initializer
                          IsPreferredPizza = true,
                          Category = Categories["Vega"],
                      },
-                     new PizzaDTO
+                     new Pizza
                      {
                          Name = "Pizza 2",
                          Price = 9.95M,
@@ -37,7 +37,7 @@ namespace PizzaPortal.Migrations.Initializer
                          IsPreferredPizza = true,
                          Category = Categories["Normal"],
                      },
-                     new PizzaDTO
+                     new Pizza
                      {
                          Name = "Pizza 3",
                          Price = 8.95M,
@@ -45,7 +45,7 @@ namespace PizzaPortal.Migrations.Initializer
                          IsPreferredPizza = true,
                          Category = Categories["Vega"],
                      },
-                     new PizzaDTO
+                     new Pizza
                      {
                          Name = "Pizza 4",
                          Price = 4.95M,
@@ -53,7 +53,7 @@ namespace PizzaPortal.Migrations.Initializer
                          IsPreferredPizza = false,
                          Category = Categories["Normal"],
                      },
-                     new PizzaDTO
+                     new Pizza
                      {
                          Name = "Pizza 5",
                          Price = 6.95M,
@@ -61,7 +61,7 @@ namespace PizzaPortal.Migrations.Initializer
                          IsPreferredPizza = false,
                          Category = Categories["Vega"],
                      },
-                     new PizzaDTO
+                     new Pizza
                      {
                          Name = "Pizza 6",
                          Price = 3.95M,
@@ -74,23 +74,23 @@ namespace PizzaPortal.Migrations.Initializer
             }
         }
 
-        private static Dictionary<string, CategoryDTO> categories;
+        private static Dictionary<string, Category> categories;
 
-        public static Dictionary<string, CategoryDTO> Categories
+        public static Dictionary<string, Category> Categories
         {
             get
             {
                 if (categories == null)
                 {
-                    var categoryList = new CategoryDTO[]
+                    var categoryList = new Category[]
                     {
-                        new CategoryDTO { Name = "Normal", },
-                        new CategoryDTO { Name = "Vega" }
+                        new Category { Name = "Normal", },
+                        new Category { Name = "Vega" }
                     };
 
-                    categories = new Dictionary<string, CategoryDTO>();
+                    categories = new Dictionary<string, Category>();
 
-                    foreach (CategoryDTO cat in categoryList)
+                    foreach (Category cat in categoryList)
                     {
                         categories.Add(cat.Name, cat);
                     }

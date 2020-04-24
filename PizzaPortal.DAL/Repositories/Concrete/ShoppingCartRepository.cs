@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Concrete
 {
-    public class ShoppingCartRepository : Repository<ShoppingCartItemDTO>, IShoppingCartRepository
+    public class ShoppingCartRepository : Repository<ShoppingCartItem>, IShoppingCartRepository
     {
         private readonly DataContext _context;
 
@@ -21,7 +21,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
         }
 
         public string ShoppingCartId { get; set; }
-        public List<ShoppingCartItemDTO> ShoppingCartItems { get; set; }
+        public List<ShoppingCartItem> ShoppingCartItems { get; set; }
 
         public static ShoppingCartRepository GetCart(IServiceProvider services)
         {
@@ -37,7 +37,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             return new ShoppingCartRepository(context) { ShoppingCartId = cartId };
         }
 
-        public async Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsAsync()
+        public async Task<List<ShoppingCartItem>> GetShoppingCartItemsAsync()
         {
             return ShoppingCartItems ?? await this._context.ShoppingCartItems
                                 .Where(x => x.ShoppingCartId == ShoppingCartId)
@@ -45,7 +45,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
                                 .ToListAsync();
         }
 
-        public async Task AddToCartAsync(PizzaDTO pizza, int amount)
+        public async Task AddToCartAsync(Pizza pizza, int amount)
         {
             var shoppingCartItem = await this._context.ShoppingCartItems
                                              .SingleOrDefaultAsync(x => x.Pizza.Id == pizza.Id &&
@@ -53,7 +53,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
 
             if (shoppingCartItem == null)
             {
-                shoppingCartItem = new ShoppingCartItemDTO
+                shoppingCartItem = new ShoppingCartItem
                 {
                     ShoppingCartId = ShoppingCartId,
                     Pizza = pizza,
@@ -70,7 +70,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             await this._context.SaveChangesAsync();
         }
 
-        public async Task<int> RemoveFromCartAsync(PizzaDTO pizza)
+        public async Task<int> RemoveFromCartAsync(Pizza pizza)
         {
             var shoppingCartItem = await this._context.ShoppingCartItems
                                              .SingleOrDefaultAsync(x => x.Pizza.Id == pizza.Id &&

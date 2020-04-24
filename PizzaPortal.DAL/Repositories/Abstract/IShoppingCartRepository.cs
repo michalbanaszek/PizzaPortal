@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Abstract
 {
-    public interface IShoppingCartRepository : IRepository<ShoppingCartItemDTO>
+    public interface IShoppingCartRepository : IRepository<ShoppingCartItem>
     {
         string ShoppingCartId { get; set; }
-        List<ShoppingCartItemDTO> ShoppingCartItems { get; set; }
+        List<ShoppingCartItem> ShoppingCartItems { get; set; }
 
-        Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsAsync();
-        Task AddToCartAsync(PizzaDTO pizza, int amount);
-        Task<int> RemoveFromCartAsync(PizzaDTO pizza);
+        Task<List<ShoppingCartItem>> GetShoppingCartItemsAsync();
+        Task AddToCartAsync(Pizza pizza, int amount);
+        Task<int> RemoveFromCartAsync(Pizza pizza);
         Task ClearCartAsync();
         Task<decimal> GetShoppingCartTotalAsync();
     }

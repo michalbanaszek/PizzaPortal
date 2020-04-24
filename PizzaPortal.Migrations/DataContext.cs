@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PizzaPortal.Model.Models;
 
 namespace PizzaPortal.Migrations
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext
     {
         public DataContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
@@ -14,10 +15,10 @@ namespace PizzaPortal.Migrations
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<PizzaDTO> Pizzas { get; set; }
-        public DbSet<CategoryDTO> Categories { get; set; }
-        public DbSet<ShoppingCartItemDTO> ShoppingCartItems { get; set; }
-        public DbSet<OrderDTO> Orders { get; set; }
-        public DbSet<OrderDetailDTO> OrderDetails { get; set; }
+        public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }
