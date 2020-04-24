@@ -1,0 +1,18 @@
+﻿@model IndexPizzaViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<h3>@Model.CurrentCategory</h3>
+
+<div class="row">
+    @foreach (var pizza in Model.Items)
+    {
+        @await Html.PartialAsync("_PizzasSummary", pizza);
+    }
+</div>
