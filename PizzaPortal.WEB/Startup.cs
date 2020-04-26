@@ -51,11 +51,11 @@ namespace PizzaPortal.WEB
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
-
+            services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddTransient<IEmailService, EmailService>();
 
             services.AddMvc(options =>
             {
@@ -70,6 +70,8 @@ namespace PizzaPortal.WEB
                   conf.LocalizationEnabled = false;
                   conf.RegisterValidatorsFromAssemblyContaining<Startup>();
               });
+
+          
 
             services.AddAuthentication();           
             services.AddMemoryCache();
