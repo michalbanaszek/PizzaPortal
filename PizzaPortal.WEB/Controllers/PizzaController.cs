@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -7,9 +6,7 @@ using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.Model.Models;
 using PizzaPortal.Model.ViewModels.Error;
 using PizzaPortal.Model.ViewModels.Pizza;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PizzaPortal.WEB.Controllers
@@ -89,12 +86,17 @@ namespace PizzaPortal.WEB.Controllers
 
                     var result = await this._pizzaService.CreateAsync(pizza);
 
-                    if (result)
+                    if (!result)
                     {
-                        return RedirectToAction(nameof(Details), new { id = pizza.Id });
+                        this._logger.LogError($"Cannot create pizza");
+
+                        ViewBag.ErrorMessage = $"Cannot create pizza";
+
+                        return View("Error");
                     }
 
-                    return View(viewModel);
+                    return RedirectToAction(nameof(Details), new { id = pizza.Id });
+
                 }
                 catch (DbUpdateException ex)
                 {
@@ -103,9 +105,8 @@ namespace PizzaPortal.WEB.Controllers
                     return View("Error");
                 }
             }
-
             return View(viewModel);
-        }
+        }        
 
         [HttpGet]
         public async Task<ActionResult> Edit(string id)
@@ -150,12 +151,16 @@ namespace PizzaPortal.WEB.Controllers
 
                     var result = await this._pizzaService.UpdateAsync(pizzatoUpdate);
 
-                    if (result)
+                    if (!result)
                     {
-                        return RedirectToAction(nameof(Index));
+                        this._logger.LogError($"Cannot update this pizza, id: {id}"); 
+
+                        ViewBag.ErrorMessage = $"Cannot update this pizza, id: {id}";
+
+                        return View("Error");
                     }
 
-                    return View(viewModel);
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException ex)
                 {
@@ -187,8 +192,8 @@ namespace PizzaPortal.WEB.Controllers
             return View(this._mapper.Map<DeletePizzaViewModel>(pizza));
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Delete(string id, DeletePizzaViewModel viewModel)
+        [HttpPost, ActionName("Delete")]
+        public async Task<ActionResult> ConfirmDelete(string id)
         {
             try
             {
@@ -207,12 +212,16 @@ namespace PizzaPortal.WEB.Controllers
 
                 var result = await this._pizzaService.DeleteAsync(id);
 
-                if (result)
+                if (!result)
                 {
-                    return RedirectToAction(nameof(Index));
+                    this._logger.LogError($"Cannot delete this pizza, id: {id}");
+
+                    ViewBag.ErrorMessage = $"Cannot delete this pizza, id: {id}";
+
+                    return View("Error");
                 }
 
-                return View(viewModel);
+                return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)
             {
