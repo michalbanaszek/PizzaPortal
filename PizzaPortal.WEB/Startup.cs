@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.BLL.Services.Concrete;
+using PizzaPortal.BLL.Settings;
 using PizzaPortal.DAL.Repositories.Abstract;
 using PizzaPortal.DAL.Repositories.Concrete;
 using PizzaPortal.Migrations;
@@ -38,8 +39,12 @@ namespace PizzaPortal.WEB
                 options.UseSqlServer(Configuration.GetConnectionString("PizzaConnection"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<DataContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            })
+                    .AddEntityFrameworkStores<DataContext>()
+                    .AddDefaultTokenProviders();
 
             services.AddScoped<IRepository<BaseModel>, Repository<BaseModel>>();
             services.AddScoped<IPizzaRepository, PizzaRepository>();
@@ -70,8 +75,6 @@ namespace PizzaPortal.WEB
                   conf.LocalizationEnabled = false;
                   conf.RegisterValidatorsFromAssemblyContaining<Startup>();
               });
-
-          
 
             services.AddAuthentication();           
             services.AddMemoryCache();

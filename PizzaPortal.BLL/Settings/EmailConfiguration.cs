@@ -1,4 +1,4 @@
-﻿namespace PizzaPortal.WEB.Settings
+﻿namespace PizzaPortal.BLL.Settings
 {
 	public class EmailConfiguration : IEmailConfiguration
     {

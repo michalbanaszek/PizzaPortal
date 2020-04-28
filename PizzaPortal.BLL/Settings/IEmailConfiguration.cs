@@ -1,7 +1,7 @@
-﻿namespace PizzaPortal.WEB.Settings
+﻿namespace PizzaPortal.BLL.Settings
 {
 	public interface IEmailConfiguration
-    {
+	{
 		string SmtpServer { get; }
 		int SmtpPort { get; }
 		string SmtpUsername { get; set; }

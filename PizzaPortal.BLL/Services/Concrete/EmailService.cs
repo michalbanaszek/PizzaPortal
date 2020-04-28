@@ -1,81 +1,56 @@
-﻿using MailKit.Net.Pop3;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
 using PizzaPortal.BLL.Services.Abstract;
+using PizzaPortal.BLL.Settings;
 using PizzaPortal.Model.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Concrete
 {
-	public class EmailService : IEmailService
+    public class EmailService : IEmailService
     {
-		private readonly IEmailConfiguration _emailConfiguration;
+        private readonly IEmailConfiguration _emailConfiguration;
+        private readonly ILogger<EmailService> _logger;
+        private const string _fromAdressTitle = "Pizza Portal";
+        private const string _toAdressTitle = "Microsoft ASP.NET Core";
 
-		public EmailService(IEmailConfiguration emailConfiguration)
-		{
-			_emailConfiguration = emailConfiguration;
-		}
+        public EmailService(IEmailConfiguration emailConfiguration, ILogger<EmailService> logger)
+        {
+            _emailConfiguration = emailConfiguration;
+            this._logger = logger;
+        }
 
-		public List<EmailMessage> ReceiveEmail(int maxCount = 10)
-		{
-			using (var emailClient = new Pop3Client())
-			{
-				emailClient.Connect(_emailConfiguration.PopServer, _emailConfiguration.PopPort, true);
+        public async Task SendEmailAsync(EmailMessage emailMessage)
+        {
+                var mimeMessage = new MimeMessage();
 
-				emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+                mimeMessage.From.Add(new MailboxAddress(_fromAdressTitle, this._emailConfiguration.SmtpUsername));
 
-				emailClient.Authenticate(_emailConfiguration.PopUsername, _emailConfiguration.PopPassword);
+                mimeMessage.To.Add(new MailboxAddress(_toAdressTitle, emailMessage.ToAddress));
 
-				List<EmailMessage> emails = new List<EmailMessage>();
-				for (int i = 0; i < emailClient.Count && i < maxCount; i++)
-				{
-					var message = emailClient.GetMessage(i);
-					var emailMessage = new EmailMessage
-					{
-						Content = !string.IsNullOrEmpty(message.HtmlBody) ? message.HtmlBody : message.TextBody,
-						Subject = message.Subject
-					};
-					emailMessage.ToAddresses.AddRange(message.To.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
-					emailMessage.FromAddresses.AddRange(message.From.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
-					emails.Add(emailMessage);
-				}
+                mimeMessage.Subject = emailMessage.Subject;
 
-				return emails;
-			}
-		}
+                mimeMessage.Body = new TextPart(TextFormat.Plain)
+                {
+                    Text = emailMessage.Content
+                };
 
-		public void Send(EmailMessage emailMessage)
-		{
-			var message = new MimeMessage();
-			message.To.AddRange(emailMessage.ToAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
-			message.From.AddRange(emailMessage.FromAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
+                using (var client = new SmtpClient())
+                {
+                    client.Connect(this._emailConfiguration.SmtpServer, this._emailConfiguration.SmtpPort);
 
-			message.Subject = emailMessage.Subject;
-			//We will say we are sending HTML. But there are options for plaintext etc. 
-			message.Body = new TextPart(TextFormat.Html)
-			{
-				Text = emailMessage.Content
-			};
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-			//Be careful that the SmtpClient class is the one from Mailkit not the framework!
-			using (var emailClient = new SmtpClient())
-			{
-				//The last parameter here is to use SSL (Which you should!)
-				emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, true);
+                    client.Authenticate(this._emailConfiguration.SmtpUsername, this._emailConfiguration.SmtpPassword);
 
-				//Remove any OAuth functionality as we won't be using it. 
-				emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+                    await client.SendAsync(mimeMessage);
 
-				emailClient.Authenticate(_emailConfiguration.SmtpUsername, _emailConfiguration.SmtpPassword);
+                    this._logger.LogInformation($"The mail has been sent successfully. To: {emailMessage.ToAddress}");
 
-				emailClient.Send(message);
-
-				emailClient.Disconnect(true);
-			}
-
-		}
-	}
+                    await client.DisconnectAsync(true);
+                }
+        }
+    }
 }
