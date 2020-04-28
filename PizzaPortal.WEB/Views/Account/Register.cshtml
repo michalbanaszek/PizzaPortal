@@ -10,6 +10,7 @@
         <form asp-controller="Account" asp-action="Register" method="post" role="form">
             <h4>Create a new account and order your first pizza today!</h4>
             <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="Email" class="col-md-2 control-label"></label>
