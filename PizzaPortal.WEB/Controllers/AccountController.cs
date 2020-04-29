@@ -300,6 +300,146 @@ namespace PizzaPortal.WEB.Controllers
             return View("Error");
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await this._userManager.FindByEmailAsync(viewModel.Email);
+
+                if (user != null && await this._userManager.IsEmailConfirmedAsync(user))
+                {
+                    var token = await this._userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = viewModel.Email, token = token }, Request.Scheme);
+
+                    string subject = "Confirm reset password";
+
+                    string message = "Please confirm reset password in your account by clicking this link:" +
+                                     $"<a href='{passwordResetLink}'>link</a>";
+
+                    await this._emailService.SendEmailAsync(new EmailMessage() { ToAddress = viewModel.Email, Subject = subject, Content = message });
+
+                    this._logger.LogInformation("User must confirm reset password.");
+
+                    return View("ForgetPasswordConfirmation");
+                }
+
+                return View("ForgetPasswordConfirmation");
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid password reset token");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await this._userManager.FindByEmailAsync(viewModel.Email);
+
+                if (user != null)
+                {
+                    var result = await this._userManager.ResetPasswordAsync(user, viewModel.Token, viewModel.Password);
+
+                    if (result.Succeeded)
+                    {
+                        return View("ResetPasswordConfirmation");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+
+                        return View(viewModel);
+                    }
+                }
+                return View("ResetPasswordConfirmation");
+            }
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]  
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]       
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await this._userManager.GetUserAsync(User);
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+
+                var result = await this._userManager.ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                    return View(viewModel);
+                }
+
+                await this._signInManager.RefreshSignInAsync(user);
+
+                return View("ChangePasswordConfirmation");
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult ChangePasswordConfirmation()
+        {
+            return View();
+        }
+   
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
