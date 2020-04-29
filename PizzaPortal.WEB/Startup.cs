@@ -76,7 +76,18 @@ namespace PizzaPortal.WEB
                   conf.RegisterValidatorsFromAssemblyContaining<Startup>();
               });
 
-            services.AddAuthentication();           
+            services.AddAuthentication()
+                    .AddGoogle(options =>
+                    {
+                        options.ClientId = this.Configuration.GetSection("ExternalLogin:Google:ClientId").Value;
+                        options.ClientSecret = this.Configuration.GetSection("ExternalLogin:Google:ClientSecret").Value;
+                    })
+                    .AddFacebook(options =>
+                     {
+                         options.AppId = this.Configuration.GetSection("ExternalLogin:Facebook:ClientId").Value;
+                         options.AppSecret = this.Configuration.GetSection("ExternalLogin:Facebook:ClientSecret").Value;
+                    });    
+            
             services.AddMemoryCache();
             services.AddSession();
             services.AddAutoMapper(typeof(Startup));

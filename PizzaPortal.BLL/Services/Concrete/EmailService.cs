@@ -32,7 +32,7 @@ namespace PizzaPortal.BLL.Services.Concrete
 
                 mimeMessage.Subject = emailMessage.Subject;
 
-                mimeMessage.Body = new TextPart(TextFormat.Plain)
+                mimeMessage.Body = new TextPart(TextFormat.Html)
                 {
                     Text = emailMessage.Content
                 };
@@ -40,8 +40,6 @@ namespace PizzaPortal.BLL.Services.Concrete
                 using (var client = new SmtpClient())
                 {
                     client.Connect(this._emailConfiguration.SmtpServer, this._emailConfiguration.SmtpPort);
-
-                    client.AuthenticationMechanisms.Remove("XOAUTH2");
 
                     client.Authenticate(this._emailConfiguration.SmtpUsername, this._emailConfiguration.SmtpPassword);
 

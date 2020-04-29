@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.Logging;
 using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.Model.Models;
 using PizzaPortal.Model.ViewModels.Account;
 using PizzaPortal.Model.ViewModels.Error;
 using System;
-using System.Net.Sockets;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PizzaPortal.WEB.Controllers
@@ -24,7 +22,7 @@ namespace PizzaPortal.WEB.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,IEmailService emailService, IMapper mapper, ILogger<AccountController> logger)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailService emailService, IMapper mapper, ILogger<AccountController> logger)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
@@ -35,9 +33,15 @@ namespace PizzaPortal.WEB.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
+        public async Task<IActionResult> Login(string returnUrl)
         {
-            return View(new LoginViewModel() { ReturnUrl = returnUrl });
+            var viewModel = new LoginViewModel()
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -82,7 +86,7 @@ namespace PizzaPortal.WEB.Controllers
         {
             return View();
         }
-     
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -120,7 +124,7 @@ namespace PizzaPortal.WEB.Controllers
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
-                }            
+                }
                 catch (Exception ex)
                 {
                     this._logger.LogError($"Problem to send email. Message Error: {ex.Message}");
@@ -172,12 +176,128 @@ namespace PizzaPortal.WEB.Controllers
             else
             {
                 foreach (var error in result.Errors)
-                {                   
+                {
                     this._logger.LogError(string.Empty, error.Description);
                 }
 
                 return View("Error");
             }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+
+            var properties = this._signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            LoginViewModel viewModel = new LoginViewModel()
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: { remoteError }");
+
+                return View("Login", viewModel);
+            }
+
+            var info = await this._signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error loading external login information");
+
+                return View("Login", viewModel);
+            }
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+            IdentityUser user = null;
+
+            if (email != null)
+            {
+                user = await this._userManager.FindByEmailAsync(email);
+
+                if (user != null && !user.EmailConfirmed)
+                {
+                    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
+
+                    return View("Login", viewModel);
+                }
+            }
+
+            var signInResult = await this._signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (signInResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                if (email != null)
+                {
+                    if (user == null)
+                    {
+                        user = new IdentityUser()
+                        {
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        };
+
+                        var result = await this._userManager.CreateAsync(user);
+
+                        if (!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+
+                            return View("Login", viewModel);
+                        }
+                        else
+                        {
+                            var token = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token = token }, Request.Scheme);
+
+                            string subject = "Confirm your account";
+
+                            string message = "Please confirm your account by clicking this link:" +
+                                             $"<a href='{confirmationLink}'>link</a>";
+
+                            await this._emailService.SendEmailAsync(new EmailMessage() { ToAddress = email, Subject = subject, Content = message });
+
+                            this._logger.LogInformation("User must confirm email to get a new account.");
+
+                            return View("RegisterSuccessed");
+                        }
+                    }
+
+                    await _userManager.AddLoginAsync(user, info);
+
+                    await this._signInManager.SignInAsync(user, false);
+
+                    return LocalRedirect(returnUrl);
+                }
+            }
+
+            this._logger.LogError($"Email claim not received from: {info.LoginProvider}");
+
+            return View("Error");
         }
 
         [HttpPost]
