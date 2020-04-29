@@ -18,6 +18,7 @@ using PizzaPortal.DAL.Repositories.Concrete;
 using PizzaPortal.Migrations;
 using PizzaPortal.Migrations.Initializer;
 using PizzaPortal.Model.Models;
+using PizzaPortal.WEB.Security;
 using System;
 
 namespace PizzaPortal.WEB
@@ -42,9 +43,21 @@ namespace PizzaPortal.WEB
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
             })
                     .AddEntityFrameworkStores<DataContext>()
-                    .AddDefaultTokenProviders();
+                    .AddDefaultTokenProviders()
+                    .AddTokenProvider<CustomEmailConfirmationTokenProvider<IdentityUser>>("CustomEmailConfirmation");
+
+            services.Configure<DataProtectionTokenProviderOptions>(options => 
+            {
+                options.TokenLifespan = TimeSpan.FromHours(5);
+            });
+
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromDays(3);
+            });
 
             services.AddScoped<IRepository<BaseModel>, Repository<BaseModel>>();
             services.AddScoped<IPizzaRepository, PizzaRepository>();
