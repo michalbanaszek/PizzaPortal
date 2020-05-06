@@ -2,6 +2,7 @@
 using PizzaPortal.DAL.Repositories.Abstract;
 using PizzaPortal.Model.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Concrete
 {
@@ -16,9 +17,13 @@ namespace PizzaPortal.BLL.Services.Concrete
 
         public IEnumerable<Pizza> PreferredPizzas => this._pizzaRepository.PreferredPizzas;
 
-        public IEnumerable<Pizza> GetAllByCategory(string category)
+        public async Task<IEnumerable<Pizza>> GetAllByCategoryAsync(string category)
         {
-            return this._pizzaRepository.GetAllByCategory(category);
+            return await this._pizzaRepository.GetAllByCategoryAsync(category);
+        }
+        public async Task<IEnumerable<Pizza>> GetAllIncludedAsync()
+        {
+            return await this._pizzaRepository.GetAllIncludedAsync();
         }
     }
 }

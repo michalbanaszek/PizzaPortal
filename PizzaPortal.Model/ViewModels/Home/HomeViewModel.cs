@@ -6,6 +6,6 @@ namespace PizzaPortal.Model.ViewModels.Home
 {
     public class HomeViewModel : BaseViewModel
     {
-        public IEnumerable<ItemPizzaViewModel> PrefferedPizza { get; set; }
+        public IEnumerable<PizzaItemViewModel> PrefferedPizza { get; set; }
     }
 }

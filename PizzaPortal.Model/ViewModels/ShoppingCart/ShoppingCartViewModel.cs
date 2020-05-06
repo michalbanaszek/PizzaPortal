@@ -18,7 +18,7 @@ namespace PizzaPortal.Model.ViewModels.ShoppingCart
 
     public class ItemShoppingCartViewModel
     {
-        public ItemPizzaViewModel Pizza { get; set; }
+        public PizzaItemViewModel Pizza { get; set; }
         public int Amount { get; set; }
         public string ShoppingCartId { get; set; }
     }

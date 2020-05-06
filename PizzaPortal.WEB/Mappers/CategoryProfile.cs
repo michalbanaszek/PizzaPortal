@@ -8,7 +8,7 @@ namespace PizzaPortal.WEB.Mappers
     {
         public CategoryProfile()
         {
-            CreateMap<Category, ItemCategoryViewModel>();
+            CreateMap<Category, CategoryItemViewModel>();
         }
     }
 }

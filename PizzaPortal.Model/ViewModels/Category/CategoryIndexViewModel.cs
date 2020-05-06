@@ -4,18 +4,18 @@ using System.Text;
 
 namespace PizzaPortal.Model.ViewModels.Category
 {
-    public class IndexCategoryViewModel : BaseViewModel
+    public class CategoryIndexViewModel : BaseViewModel
     {
-        public IndexCategoryViewModel()
+        public CategoryIndexViewModel()
         {
             PageTitle = "Index Category";
-            Items = new List<ItemCategoryViewModel>();
+            Items = new List<CategoryItemViewModel>();
         }
 
-        public List<ItemCategoryViewModel> Items { get; set; }
+        public List<CategoryItemViewModel> Items { get; set; }
     }
 
-    public class ItemCategoryViewModel
+    public class CategoryItemViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

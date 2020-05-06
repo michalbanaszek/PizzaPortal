@@ -24,4 +24,9 @@
     <ProjectReference Include="..\PizzaPortal.Migrations\PizzaPortal.Migrations.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\pizzas\" />
+  </ItemGroup>
+
 </Project>

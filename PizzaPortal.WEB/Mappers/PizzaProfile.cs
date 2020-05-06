@@ -8,11 +8,11 @@ namespace PizzaPortal.WEB.Mappers
     {
         public PizzaProfile()
         {
-            CreateMap<Pizza, ItemPizzaViewModel>();
-            CreateMap<Pizza, DetailsPizzaViewModel>();
-            CreateMap<CreatePizzaViewModel, Pizza>();
-            CreateMap<Pizza, EditPizzaViewModel>().ReverseMap();
-            CreateMap<Pizza, DeletePizzaViewModel>();
+            CreateMap<Pizza, PizzaItemViewModel>();
+            CreateMap<Pizza, PizzaDetailsViewModel>();
+            CreateMap<PizzaCreateViewModel, Pizza>();
+            CreateMap<Pizza, PizzaEditViewModel>().ForMember(dest => dest.ExistingPhotoPath, opt => opt.MapFrom(src => src.PhotoPath)).ReverseMap();
+            CreateMap<Pizza, PizzaDeleteViewModel>();
         }
     }
 }

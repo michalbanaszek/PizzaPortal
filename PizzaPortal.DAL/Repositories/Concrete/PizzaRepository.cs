@@ -4,6 +4,7 @@ using PizzaPortal.Migrations;
 using PizzaPortal.Model.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PizzaPortal.DAL.Repositories.Concrete
 {
@@ -18,9 +19,15 @@ namespace PizzaPortal.DAL.Repositories.Concrete
 
         public IEnumerable<Pizza> PreferredPizzas => this._context.Pizzas.Where(x => x.IsPreferredPizza).Include(x => x.Category);
 
-        public IEnumerable<Pizza> GetAllByCategory(string category)
+        public async Task<IEnumerable<Pizza>> GetAllByCategoryAsync(string category)
         {
-            return this._context.Pizzas.Where(x => x.Category.Name.Equals(category));
+            return await this._context.Set<Pizza>().Where(x => x.Category.Name.Equals(category)).Include(x => x.Category).ToListAsync();;
+        }
+
+        public async Task<IEnumerable<Pizza>> GetAllIncludedAsync()
+        {
+            return await this._context.Set<Pizza>().Include(x => x.Category).ToListAsync();
+           
         }
     }
 }

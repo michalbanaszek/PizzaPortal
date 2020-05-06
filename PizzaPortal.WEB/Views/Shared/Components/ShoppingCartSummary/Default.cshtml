@@ -1,9 +1,11 @@
 ﻿@model ShoppingCartViewModel
 
-@if (Model.Items.Any())
-{
-    <a class="nav-link text-info" asp-controller="ShoppingCart" asp-action="Index">
-        <span><i class="fa fa-shopping-cart"></i></span>
-        <span class="badge badge-info">@Model.Items.Sum(x => x.Amount)</span>      
-    </a>
-}
+<li class="nav-item">
+    @if (Model.Items.Any())
+    {
+        <a class="nav-link text-info" asp-controller="ShoppingCart" asp-action="Index">
+            <span><i class="fa fa-shopping-cart"></i></span>
+            <span class="badge badge-info">@Model.Items.Sum(x => x.Amount)</span>
+        </a>
+    }
+</li>

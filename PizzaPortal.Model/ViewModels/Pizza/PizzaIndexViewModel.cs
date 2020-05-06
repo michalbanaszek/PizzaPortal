@@ -1,26 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using PizzaPortal.Model.ViewModels.Category;
+using System.Collections.Generic;
 
 namespace PizzaPortal.Model.ViewModels.Pizza
 {
-    public class IndexPizzaViewModel : BaseViewModel
+    public class PizzaIndexViewModel : BaseViewModel
     {
-        public IndexPizzaViewModel()
+        public PizzaIndexViewModel()
         {
             PageTitle = "Index Pizza";
-            Items = new List<ItemPizzaViewModel>();
+            Items = new List<PizzaItemViewModel>();
         }
 
-        public List<ItemPizzaViewModel> Items { get; set; }
+        public List<PizzaItemViewModel> Items { get; set; }
         public string CurrentCategory { get; set; }
     }
 
-    public class ItemPizzaViewModel
+    public class PizzaItemViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
         public bool IsPreferredPizza { get; set; }
+        public string PhotoPath { get; set; }
         public string CategoryId { get; set; }
+        public CategoryItemViewModel Category { get; set; }
     }
 }

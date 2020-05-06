@@ -1,12 +1,13 @@
 ﻿namespace PizzaPortal.Model.ViewModels.Pizza
 {
-    public class EditPizzaViewModel : CreatePizzaViewModel
+    public class PizzaEditViewModel : PizzaCreateViewModel
     {
-        public EditPizzaViewModel()
+        public PizzaEditViewModel()
         {
             PageTitle = "Edit Pizza";
         }
 
         public string Id { get; set; }
+        public string ExistingPhotoPath { get; set; }
     }
 }

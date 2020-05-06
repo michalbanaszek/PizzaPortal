@@ -14,7 +14,7 @@ namespace PizzaPortal.Model.ViewModels.OrderDetail
         public string OrderId { get; set; }
         public int Amount { get; set; }
         public decimal Price { get; set; }
-        public virtual ItemPizzaViewModel Pizza { get; set; }
+        public virtual PizzaItemViewModel Pizza { get; set; }
         public virtual OrderViewModel Order { get; set; }
     }
 }

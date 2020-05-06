@@ -22,7 +22,7 @@ namespace PizzaPortal.WEB.Controllers
         {
             var viewModel = new HomeViewModel()
             {
-                PrefferedPizza = this._mapper.Map<List<ItemPizzaViewModel>>(this._pizzaService.PreferredPizzas)
+                PrefferedPizza = this._mapper.Map<List<PizzaItemViewModel>>(this._pizzaService.PreferredPizzas)
             };
 
             return View(viewModel);

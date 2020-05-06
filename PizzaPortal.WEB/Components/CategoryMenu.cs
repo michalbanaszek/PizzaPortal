@@ -20,7 +20,7 @@ namespace PizzaPortal.WEB.Components
 
         public IViewComponentResult Invoke()
         {
-            return View(this._mapper.Map<List<ItemCategoryViewModel>>(this._categoryService.GetAllAsync().Result.OrderBy(x => x.Name)));
+            return View(this._mapper.Map<List<CategoryItemViewModel>>(this._categoryService.GetAllAsync().Result.OrderBy(x => x.Name)));
         }
     }
 }
