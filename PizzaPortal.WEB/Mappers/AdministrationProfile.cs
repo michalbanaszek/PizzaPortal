@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using PizzaPortal.Model.ViewModels.Administration.Role;
+using PizzaPortal.Model.ViewModels.Administration.User;
 
 namespace PizzaPortal.WEB.Mappers
 {
@@ -12,6 +13,9 @@ namespace PizzaPortal.WEB.Mappers
             CreateMap<IdentityUser, UserRoleItemViewModel>();
             CreateMap<IdentityRole, RoleItemViewModel>();
             CreateMap<RoleEditViewModel, IdentityRole>().ReverseMap();
+
+            CreateMap<IdentityUser, UserItemViewModel>();
+            CreateMap<IdentityUser, UserEditViewModel>();
         }
     }
 }

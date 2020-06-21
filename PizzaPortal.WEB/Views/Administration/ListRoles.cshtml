@@ -1,5 +1,9 @@
 ﻿@model RolesViewModel
 
+@using Microsoft.AspNetCore.Authorization
+
+@inject IAuthorizationService authorizationService
+
 @{
     ViewBag.Title = Model.PageTitle;
 }
@@ -20,9 +24,25 @@
                 <h5 class="card-title">@role.Name</h5>
             </div>
             <div class="card-footer">
-                <a asp-controller="Administration" asp-action="EditRole" asp-route-roleId="@role.Id" class="btn btn-primary">Edit</a>
-                <form method="post" asp-controller="Administration" asp-action="DeleteRole" asp-route-roleId="@role.Id">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+
+                <form method="post" asp-action="DeleteRole" asp-route-id="@role.Id">
+
+                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                    {
+                        <a asp-controller="Administration" asp-action="EditRole" asp-route-roleId="@role.Id" class="btn btn-primary">Edit</a>
+                    }
+
+                    <span id="confirmDeleteSpan_@role.Id" style="display:none">
+                        <span>Are you sure you want to delete?</span>
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                        <a href="#" class="btn btn-primary"
+                           onclick="confirmDelete('@role.Id', false)">No</a>
+                    </span>
+
+                    <span id="deleteSpan_@role.Id">
+                        <a href="#" class="btn btn-danger"
+                           onclick="confirmDelete('@role.Id', true)">Delete</a>
+                    </span>
                 </form>
             </div>
         </div>
@@ -45,3 +65,6 @@ else
     </div>
 }
 
+@section Scripts {
+    <script src="~/js/CustomScript.js"></script>
+}

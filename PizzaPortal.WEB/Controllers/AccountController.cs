@@ -104,6 +104,13 @@ namespace PizzaPortal.WEB.Controllers
                     {
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
+                        if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            await this._userManager.ConfirmEmailAsync(user, token);
+
+                            return RedirectToAction("ListUsers", "Administration");
+                        }
+
                         var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token = token }, Request.Scheme);
 
                         string subject = "Confirm your account";
@@ -446,13 +453,6 @@ namespace PizzaPortal.WEB.Controllers
             await this._signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View();
         }
     }
 }

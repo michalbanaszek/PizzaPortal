@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace PizzaPortal.WEB.Security
+namespace PizzaPortal.WEB.Security.TokenLife
 {
     public class CustomEmailConfirmationTokenProvider<TUser> : DataProtectorTokenProvider<TUser> where TUser : class
     {

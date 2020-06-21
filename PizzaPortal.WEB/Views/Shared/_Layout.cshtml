@@ -46,7 +46,7 @@
                     </ul>
 
                     <ul class="navbar-nav">
-                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin") || User.IsInRole("Super Admin"))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
@@ -55,6 +55,9 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" asp-controller="Administration" asp-action="ListRoles">
                                         Roles
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="ListUsers">
+                                        Users
                                     </a>
                                     <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
                                         Change Password
@@ -127,11 +130,12 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
     </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @if (IsSectionDefined("Scripts"))
     {
         @RenderSection("Scripts", required: true)
     }
+
+  
 </body>
 </html>
