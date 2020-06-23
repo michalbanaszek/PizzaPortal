@@ -1,6 +1,7 @@
 ﻿using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.DAL.Repositories.Abstract;
 using PizzaPortal.Model.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PizzaPortal.BLL.Services.Concrete
@@ -12,6 +13,16 @@ namespace PizzaPortal.BLL.Services.Concrete
         public OrderService(IOrderRepository orderRepository) : base(orderRepository)
         {
             this._orderRepository = orderRepository;
+        }
+
+        public Task<List<Order>> GetOrdersAsync()
+        {
+            return this._orderRepository.GetOrdersAsync();
+        }
+
+        public Task<List<Order>> GetUserOrdersAsync(string userId)
+        {
+            return this._orderRepository.GetUserOrdersAsync(userId);
         }
 
         public async Task NewOrderAsync(Order order)

@@ -223,8 +223,6 @@ namespace PizzaPortal.WEB.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<ActionResult> ConfirmDelete(string id)
         {
-            try
-            {
                 var pizza = await this._pizzaService.GetByIdAsync(id);
 
                 if (pizza == null)
@@ -238,6 +236,8 @@ namespace PizzaPortal.WEB.Controllers
                     return View("NotFound", errorViewModel);
                 }
 
+            try
+            {
                 var result = await this._pizzaService.DeleteAsync(id);
 
                 if (!result)

@@ -11,6 +11,7 @@ namespace PizzaPortal.Model.ViewModels.Order
             PageTitle = "Checkout";
         }
 
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -23,5 +24,6 @@ namespace PizzaPortal.Model.ViewModels.Order
         public string Email { get; set; }
         public decimal OrderTotal { get; set; }
         public DateTime OrderPlaced { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace PizzaPortal.Model.Models
@@ -17,5 +18,7 @@ namespace PizzaPortal.Model.Models
         public string Email { get; set; }
         public decimal OrderTotal { get; set; }
         public DateTime OrderPlaced { get; set; }
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
     }
 }
