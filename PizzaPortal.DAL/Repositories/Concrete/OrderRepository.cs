@@ -24,7 +24,16 @@ namespace PizzaPortal.DAL.Repositories.Concrete
         {
             return await this._context.Orders.Include(x => x.OrderDetails)
                                              .Include(x => x.User)
+                                             .OrderBy(x => x.OrderPlaced)
                                              .ToListAsync();
+        }
+
+        public async Task<Order> GetOrderSummaryByIdAsync(string orderId)
+        {
+            return await this._context.Orders.Include(x => x.OrderDetails)
+                                                .ThenInclude(x => x.Pizza)
+                                             .Include(x => x.User)
+                                             .FirstOrDefaultAsync(x => x.Id == orderId);
         }
 
         public async Task<List<Order>> GetUserOrdersAsync(string userId)
@@ -32,6 +41,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             return await this._context.Orders.Include(x => x.OrderDetails)
                                              .Include(x => x.User)
                                              .Where(x => x.UserId == userId)
+                                             .OrderBy(x => x.OrderPlaced)
                                              .ToListAsync();
         }
 
@@ -46,7 +56,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             {
                 var orderDetail = new OrderDetail()
                 {
-                    OrderId = order.Id,
+                    Order = order,
                     PizzaId = item.Pizza.Id,
                     Amount = item.Amount,
                     Price = item.Pizza.Price

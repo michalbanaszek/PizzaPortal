@@ -39,18 +39,37 @@ namespace PizzaPortal.WEB.Controllers
             var user = await this._userManager.GetUserAsync(HttpContext.User);
             var isSuperAdmin = await this._userManager.IsInRoleAsync(user, "Super Admin");
             var isAdmin = await this._userManager.IsInRoleAsync(user, "Admin");
-            List<OrderViewModel> orders = null;
+            OrderIndexViewModel viewModel = new OrderIndexViewModel();
 
             if (isSuperAdmin == true || isAdmin == true)
-            {
-                orders = this._mapper.Map<List<OrderViewModel>>(await this._orderService.GetOrdersAsync());
+            {            
+                viewModel.Items = this._mapper.Map<List<OrderItemViewModel>>(await this._orderService.GetOrdersAsync());
             }
             else
             {
-                orders = this._mapper.Map<List<OrderViewModel>>(await this._orderService.GetUserOrdersAsync(user.Id));
+                viewModel.Items = this._mapper.Map<List<OrderItemViewModel>>(await this._orderService.GetUserOrdersAsync(user.Id));
             }
 
-            return View(orders);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var order = await this._orderService.GetOrderSummaryByIdAsync(id);
+
+            if (order == null)
+            {
+                var errorViewModel = new NotFoundViewModel()
+                {
+                    StatusCode = 404,
+                    Message = $"Not found this id: {id}"
+                };
+
+                return View("NotFound", errorViewModel);
+            }
+
+            return View(this._mapper.Map<OrderItemViewModel>(order));
         }
 
         [HttpGet]
@@ -60,7 +79,7 @@ namespace PizzaPortal.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Checkout(OrderViewModel viewModel)
+        public async Task<IActionResult> Checkout(OrderItemViewModel viewModel)
         {
             var userId = this._userManager.GetUserId(HttpContext.User);          
 
@@ -108,7 +127,7 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", errorViewModel);
             }
          
-            return View(this._mapper.Map<OrderViewModel>(order));
+            return View(this._mapper.Map<OrderIndexViewModel>(order));
         }
 
         [HttpPost, ActionName("Delete")]

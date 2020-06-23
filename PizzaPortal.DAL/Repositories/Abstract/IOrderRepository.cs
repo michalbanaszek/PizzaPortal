@@ -6,6 +6,7 @@ namespace PizzaPortal.DAL.Repositories.Abstract
 {
     public interface IOrderRepository : IRepository<Order>
     {
+        Task<Order> GetOrderSummaryByIdAsync(string orderId);
         Task<List<Order>> GetUserOrdersAsync(string userId);
         Task<List<Order>> GetOrdersAsync();
         Task NewOrderAsync(Order order);

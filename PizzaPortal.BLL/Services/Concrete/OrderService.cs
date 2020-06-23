@@ -20,6 +20,11 @@ namespace PizzaPortal.BLL.Services.Concrete
             return this._orderRepository.GetOrdersAsync();
         }
 
+        public Task<Order> GetOrderSummaryByIdAsync(string orderId)
+        {
+            return this._orderRepository.GetOrderSummaryByIdAsync(orderId);
+        }
+
         public Task<List<Order>> GetUserOrdersAsync(string userId)
         {
             return this._orderRepository.GetUserOrdersAsync(userId);

@@ -3,7 +3,7 @@ using PizzaPortal.Model.ViewModels.Order;
 
 namespace PizzaPortal.WEB.Validators.Order
 {
-    public class OrderValidator : AbstractValidator<OrderViewModel>
+    public class OrderValidator : AbstractValidator<OrderItemViewModel>
     {
         public OrderValidator()
         {
