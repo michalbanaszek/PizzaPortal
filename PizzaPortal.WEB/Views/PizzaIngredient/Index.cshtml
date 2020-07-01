@@ -1,0 +1,59 @@
+﻿@model PizzaIngredientIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].PizzaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Pizza.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].IngredientId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Ingredient.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Id)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Items) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pizza.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IngredientId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ingredient.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
+                @Html.ActionLink("Details", "Details", new {  id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

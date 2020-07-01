@@ -70,6 +70,10 @@ namespace PizzaPortal.WEB
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IIngredientService, IngredientService>();
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IPizzaIngredientService, PizzaIngredientService>();
+            services.AddScoped<IPizzaIngredientRepository, PizzaIngredientRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
@@ -149,7 +153,7 @@ namespace PizzaPortal.WEB
                 routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Seed(service);
+            DbInitializer.Initialize(service);
         }
     }
 }

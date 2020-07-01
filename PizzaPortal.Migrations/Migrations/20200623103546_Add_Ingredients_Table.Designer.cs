@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzaPortal.Migrations;
 
 namespace PizzaPortal.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200623103546_Add_Ingredients_Table")]
+    partial class Add_Ingredients_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,24 +284,6 @@ namespace PizzaPortal.Migrations.Migrations
                     b.ToTable("Pizzas");
                 });
 
-            modelBuilder.Entity("PizzaPortal.Model.Models.PizzaIngredient", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("IngredientId");
-
-                    b.Property<string>("PizzaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientId");
-
-                    b.HasIndex("PizzaId");
-
-                    b.ToTable("PizzaIngredients");
-                });
-
             modelBuilder.Entity("PizzaPortal.Model.Models.ShoppingCartItem", b =>
                 {
                     b.Property<string>("Id")
@@ -389,19 +373,6 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("PizzaPortal.Model.Models.Category", "Category")
                         .WithMany("Pizzas")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("PizzaPortal.Model.Models.PizzaIngredient", b =>
-                {
-                    b.HasOne("PizzaPortal.Model.Models.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("PizzaPortal.Model.Models.Pizza", "Pizza")
-                        .WithMany()
-                        .HasForeignKey("PizzaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

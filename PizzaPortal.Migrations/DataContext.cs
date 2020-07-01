@@ -15,10 +15,10 @@ namespace PizzaPortal.Migrations
         {
             base.OnModelCreating(modelBuilder);
 
-            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
-                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            //foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            //{
+            //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            //}
         }
 
         public DbSet<Pizza> Pizzas { get; set; }
@@ -26,5 +26,7 @@ namespace PizzaPortal.Migrations
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<PizzaIngredient> PizzaIngredients { get; set; }
     }
 }

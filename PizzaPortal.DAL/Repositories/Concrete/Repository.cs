@@ -35,8 +35,8 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             this._context.Entry(entity).State = EntityState.Detached;
             this._context.Entry(entity).State = EntityState.Deleted;           
 
-            var added = await this._context.SaveChangesAsync();
-            return added > 0;
+            var deleted = await this._context.SaveChangesAsync();
+            return deleted > 0;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

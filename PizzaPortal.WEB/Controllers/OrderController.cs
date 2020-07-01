@@ -127,7 +127,7 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", errorViewModel);
             }
          
-            return View(this._mapper.Map<OrderIndexViewModel>(order));
+            return View(this._mapper.Map<OrderItemViewModel>(order));
         }
 
         [HttpPost, ActionName("Delete")]
