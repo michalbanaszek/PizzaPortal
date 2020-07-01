@@ -7,6 +7,7 @@ namespace PizzaPortal.Model.ViewModels.Pizza
         public PizzaEditViewModel()
         {
             PageTitle = "Edit Pizza";
+            ExistingPhotoPath = string.Empty;
         }
 
         public string Id { get; set; }
