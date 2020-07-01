@@ -31,7 +31,7 @@ namespace PizzaPortal.WEB.Controllers
             this._logger = logger;
         }
 
-        [HttpGet]     
+        [HttpGet]
         public IActionResult ListRoles()
         {
             RolesViewModel viewModel = new RolesViewModel()
@@ -71,7 +71,7 @@ namespace PizzaPortal.WEB.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]     
+        [HttpGet]
         public async Task<IActionResult> EditRole(string roleId)
         {
             var role = await this._roleManager.FindByIdAsync(roleId);
@@ -94,7 +94,7 @@ namespace PizzaPortal.WEB.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]   
+        [HttpPost]
         public async Task<IActionResult> EditRole(RoleEditViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -320,19 +320,28 @@ namespace PizzaPortal.WEB.Controllers
             }
             else
             {
-                var result = await this._userManager.DeleteAsync(user);
-
-                if (result.Succeeded)
+                try
                 {
-                    return RedirectToAction(nameof(ListUsers));
-                }
+                    var result = await this._userManager.DeleteAsync(user);
 
-                foreach (var error in result.Errors)
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(ListUsers));
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View(nameof(ListUsers));
+                }
+                catch (DbUpdateException ex)
                 {
-                    ModelState.AddModelError("", error.Description);
-                }
+                    this._logger.LogError(ex.Message);
 
-                return View(nameof(ListUsers));
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Delete User", ErrorMessage = ex.Message });
+                }
             }
         }
 
