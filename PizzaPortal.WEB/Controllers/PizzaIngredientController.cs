@@ -32,7 +32,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(new PizzaIngredientIndexViewModel() { Items = this._mapper.Map<List<PizzaIngredientItemViewModel>>(await this._pizzaIngredientService.GetByAllWithInclude()) });
+            return View(new PizzaIngredientIndexViewModel() { Items = this._mapper.Map<List<PizzaIngredientItemViewModel>>(await this._pizzaIngredientService.GetByAllWithIncludeAsync()) });
         }
 
         [HttpGet]
@@ -45,7 +45,7 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", NotFoundId(id));
             }
 
-            return View(this._mapper.Map<PizzaIngredientDetailViewModel>(await this._pizzaIngredientService.GetByIdWithInclude(id)));
+            return View(this._mapper.Map<PizzaIngredientDetailViewModel>(await this._pizzaIngredientService.GetByIdWithIncludeAsync(id)));
         }
 
         [HttpGet]
@@ -76,7 +76,7 @@ namespace PizzaPortal.WEB.Controllers
                     return View("NotFound", NotFoundId(id));
                 }
 
-                var isExist = await this._pizzaIngredientService.CheckIngredientIsExistInPizza(viewModel.PizzaId, viewModel.IngredientId);
+                var isExist = await this._pizzaIngredientService.CheckIngredientIsExistInPizzaAsync(viewModel.PizzaId, viewModel.IngredientId);
 
                 if (isExist)
                 {
@@ -129,7 +129,7 @@ namespace PizzaPortal.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isExist = await this._pizzaIngredientService.CheckIngredientIsExistInPizza(viewModel.PizzaId, viewModel.IngredientId);
+                var isExist = await this._pizzaIngredientService.CheckIngredientIsExistInPizzaAsync(viewModel.PizzaId, viewModel.IngredientId);
 
                 if (isExist)
                 {
@@ -172,7 +172,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            var pizzaIngredient = await this._pizzaIngredientService.GetByIdWithInclude(id);
+            var pizzaIngredient = await this._pizzaIngredientService.GetByIdWithIncludeAsync(id);
 
             if (pizzaIngredient == null)
             {
@@ -185,7 +185,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> ConfirmDelete(string id)
         {
-            var pizzaIngredient = await this._pizzaIngredientService.GetByIdWithInclude(id);
+            var pizzaIngredient = await this._pizzaIngredientService.GetByIdWithIncludeAsync(id);
 
             if (pizzaIngredient == null)
             {

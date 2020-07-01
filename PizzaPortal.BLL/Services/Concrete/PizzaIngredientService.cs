@@ -15,19 +15,29 @@ namespace PizzaPortal.BLL.Services.Concrete
             this._pizzaIngredientRepository = pizzaIngredientRepository;
         }
 
-        public async Task<bool> CheckIngredientIsExistInPizza(string pizzaId, string ingredientId)
+        public async Task<bool> CheckIngredientIsExistInPizzaAsync(string pizzaId, string ingredientId)
         {
-            return await this._pizzaIngredientRepository.CheckIngredientIsExistInPizza(pizzaId, ingredientId);
+            return await this._pizzaIngredientRepository.CheckIngredientIsExistInPizzaAsync(pizzaId, ingredientId);
         }
 
-        public async Task<List<PizzaIngredient>> GetByAllWithInclude()
+        public async Task<List<string>> GetAllIngredientInPizzaAsync(string pizzaId)
         {
-           return await this._pizzaIngredientRepository.GetByAllWithInclude();
+            return await this._pizzaIngredientRepository.GetAllIngredientInPizzaAsync(pizzaId);
         }
 
-        public async Task<PizzaIngredient> GetByIdWithInclude(string id)
+        public async Task<List<PizzaIngredient>> GetByAllWithIncludeAsync()
         {
-            return await this._pizzaIngredientRepository.GetByIdWithInclude(id);
+           return await this._pizzaIngredientRepository.GetByAllWithIncludeAsync();
+        }
+
+        public async Task<PizzaIngredient> GetByIdWithIncludeAsync(string id)
+        {
+            return await this._pizzaIngredientRepository.GetByIdWithIncludeAsync(id);
+        }
+
+        public async Task<bool> RemoveAllIngredientInPizzaAsync(string pizzaId)
+        {
+            return await this._pizzaIngredientRepository.RemoveAllIngredientInPizzaAsync(pizzaId);
         }
     }
 }

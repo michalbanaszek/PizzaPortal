@@ -72,6 +72,28 @@
             <a asp-controller="Pizza" asp-action="Index" class="btn btn-primary">Cancel</a>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Ingredients</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Ingredients.Any())
+            {
+                foreach (var ingredient in Model.Ingredients)
+                {
+                    <h5 class="card-title">@ingredient</h5>
+                }
+            }
+            else
+            {
+                <h5 class="card-title">None at the moment</h5>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-action="ManagePizzaIngredients" asp-route-pizzaId="@Model.Id" class="btn btn-primary">Manage Ingredients</a>
+        </div>
+    </div>
 </form>
 
 @section Scripts

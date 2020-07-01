@@ -1,4 +1,6 @@
-﻿namespace PizzaPortal.Model.ViewModels.Pizza
+﻿using System.Collections.Generic;
+
+namespace PizzaPortal.Model.ViewModels.Pizza
 {
     public class PizzaEditViewModel : PizzaCreateViewModel
     {
@@ -9,5 +11,7 @@
 
         public string Id { get; set; }
         public string ExistingPhotoPath { get; set; }
+
+        public List<string> Ingredients { get; set; }
     }
 }

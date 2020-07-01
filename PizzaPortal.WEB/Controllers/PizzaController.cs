@@ -7,10 +7,12 @@ using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.Model.Models;
 using PizzaPortal.Model.ViewModels.Category;
 using PizzaPortal.Model.ViewModels.Error;
+using PizzaPortal.Model.ViewModels.Ingredient;
 using PizzaPortal.Model.ViewModels.Pizza;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PizzaPortal.WEB.Controllers
@@ -19,14 +21,18 @@ namespace PizzaPortal.WEB.Controllers
     {
         private readonly IPizzaService _pizzaService;
         private readonly ICategoryService _categoryService;
+        private readonly IIngredientService _ingredientService;
+        private readonly IPizzaIngredientService _pizzaIngredientService;
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger<PizzaController> _logger;
 
-        public PizzaController(IPizzaService pizzaService, ICategoryService categoryService, IMapper mapper, IHostingEnvironment hostingEnvironment, ILogger<PizzaController> logger)
+        public PizzaController(IPizzaService pizzaService, ICategoryService categoryService, IIngredientService ingredientService, IPizzaIngredientService pizzaIngredientService, IMapper mapper, IHostingEnvironment hostingEnvironment, ILogger<PizzaController> logger)
         {
             this._pizzaService = pizzaService;
             this._categoryService = categoryService;
+            this._ingredientService = ingredientService;
+            this._pizzaIngredientService = pizzaIngredientService;
             this._mapper = mapper;
             this._hostingEnvironment = hostingEnvironment;
             this._logger = logger;
@@ -65,13 +71,7 @@ namespace PizzaPortal.WEB.Controllers
 
             if (pizza == null)
             {
-                var errorViewModel = new NotFoundViewModel()
-                {
-                    StatusCode = 404,
-                    Message = $"Not found this id: {id}"
-                };
-
-                return View("NotFound", errorViewModel);
+                return View("NotFound", NotFoundId(id));
             }
 
             return View(this._mapper.Map<PizzaDetailsViewModel>(pizza));
@@ -82,7 +82,7 @@ namespace PizzaPortal.WEB.Controllers
         {
             var viewModel = new PizzaCreateViewModel();
             viewModel.Categories = this._mapper.Map<List<CategoryItemViewModel>>(await this._categoryService.GetAllAsync());
-           
+
             return View(viewModel);
         }
 
@@ -130,17 +130,12 @@ namespace PizzaPortal.WEB.Controllers
 
             if (pizza == null)
             {
-                var errorViewModel = new NotFoundViewModel()
-                {
-                    StatusCode = 404,
-                    Message = $"Not found this id: {id}"
-                };
-
-                return View("NotFound", errorViewModel);
+                return View("NotFound", NotFoundId(id));
             }
 
             var viewModel = this._mapper.Map<PizzaEditViewModel>(pizza);
             viewModel.Categories = this._mapper.Map<List<CategoryItemViewModel>>(await this._categoryService.GetAllAsync());
+            viewModel.Ingredients = await this._pizzaIngredientService.GetAllIngredientInPizzaAsync(id);
 
             return View(viewModel);
         }
@@ -156,13 +151,7 @@ namespace PizzaPortal.WEB.Controllers
 
                     if (pizza == null)
                     {
-                        var errorViewModel = new NotFoundViewModel()
-                        {
-                            StatusCode = 404,
-                            Message = $"Not found this id: {id}"
-                        };
-
-                        return View("NotFound", errorViewModel);
+                        return View("NotFound", NotFoundId(id));
                     }
 
                     var pizzatoUpdate = this._mapper.Map<Pizza>(viewModel);
@@ -208,13 +197,7 @@ namespace PizzaPortal.WEB.Controllers
 
             if (pizza == null)
             {
-                var errorViewModel = new NotFoundViewModel()
-                {
-                    StatusCode = 404,
-                    Message = $"Not found this id: {id}"
-                };
-
-                return View("NotFound", errorViewModel);
+                return View("NotFound", NotFoundId(id));
             }
 
             return View(this._mapper.Map<PizzaDeleteViewModel>(pizza));
@@ -223,18 +206,12 @@ namespace PizzaPortal.WEB.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<ActionResult> ConfirmDelete(string id)
         {
-                var pizza = await this._pizzaService.GetByIdAsync(id);
+            var pizza = await this._pizzaService.GetByIdAsync(id);
 
-                if (pizza == null)
-                {
-                    var errorViewModel = new NotFoundViewModel()
-                    {
-                        StatusCode = 404,
-                        Message = $"Not found this id: {id}"
-                    };
-
-                    return View("NotFound", errorViewModel);
-                }
+            if (pizza == null)
+            {
+                return View("NotFound", NotFoundId(id));
+            }
 
             try
             {
@@ -252,7 +229,7 @@ namespace PizzaPortal.WEB.Controllers
                 if (!string.IsNullOrEmpty(pizza.PhotoPath))
                 {
                     ProccessDeletedFile(pizza.PhotoPath);
-                }                
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -262,6 +239,80 @@ namespace PizzaPortal.WEB.Controllers
 
                 return View("Error");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManagePizzaIngredients(string pizzaId)
+        {
+            ViewBag.PizzaId = pizzaId;
+
+            var pizza = await this._pizzaService.GetByIdAsync(pizzaId);
+
+            if (pizza == null)
+            {
+                return View("NotFound", NotFoundId(pizzaId));
+            }
+
+            var viewModel = new List<PizzaIngredientsViewModel>();
+
+            foreach (var ingredientItem in await this._ingredientService.GetAllAsync())
+            {
+                var pizzaIngredientViewModel = new PizzaIngredientsViewModel()
+                {
+                    IngredientId = ingredientItem.Id,
+                    Name = ingredientItem.Name                     
+                };
+
+                if (await this._pizzaIngredientService.CheckIngredientIsExistInPizzaAsync(pizzaId, ingredientItem.Id))
+                {
+                    pizzaIngredientViewModel.IsSelected = true;
+                }
+                else
+                {
+                    pizzaIngredientViewModel.IsSelected = false;
+                }
+
+                viewModel.Add(pizzaIngredientViewModel);
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManagePizzaIngredients(List<PizzaIngredientsViewModel> viewModel, string pizzaId)
+        {
+            var pizza = await this._pizzaService.GetByIdAsync(pizzaId);
+
+            if (pizza == null)
+            {
+                return View("NotFound", NotFoundId(pizzaId));
+            }
+
+            try
+            {
+                var result = await this._pizzaIngredientService.RemoveAllIngredientInPizzaAsync(pizzaId);
+
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Cannot remove ingredient");
+                    return View(viewModel);
+                }
+
+                var selectedIngredients = viewModel.Where(x => x.IsSelected).Select(x => x.IngredientId);
+
+                foreach (var ingredientItem in selectedIngredients)
+                {
+                    await this._pizzaIngredientService.CreateAsync(new PizzaIngredient() { IngredientId = ingredientItem, PizzaId = pizzaId });
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                this._logger.LogError(ex.Message);
+
+                return View("Error");
+            }
+
+            return RedirectToAction(nameof(Edit), new { Id = pizzaId });
         }
 
         private string ProccessUploadedFile(PizzaCreateViewModel viewModel)
@@ -288,6 +339,15 @@ namespace PizzaPortal.WEB.Controllers
             var filePath = Path.Combine(this._hostingEnvironment.WebRootPath, "images", "pizzas", fileToDelete);
 
             System.IO.File.Delete(filePath);
+        }
+
+        private static NotFoundViewModel NotFoundId(string id)
+        {
+            return new NotFoundViewModel()
+            {
+                StatusCode = 404,
+                Message = $"Not found this id: {id}"
+            };
         }
     }
 }
