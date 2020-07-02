@@ -61,9 +61,9 @@ namespace PizzaPortal.WEB.Controllers
 
                 if (result)
                 {
-                    this._logger.LogError("Ingredient is exist");
+                    ModelState.AddModelError(string.Empty, "Ingredient is exist.");
 
-                    return View("Error", new ErrorViewModel() { ErrorTitle = "Create Ingredient", ErrorMessage = "Ingredient is exist" });
+                    return View(viewModel);
                 }
 
                 try
@@ -85,7 +85,7 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError(ex.Message);
 
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Create Ingredient", ErrorMessage = ex.Message });
                 }
             }
 
@@ -135,7 +135,7 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError(ex.Message);
 
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Edit Ingredient", ErrorMessage = ex.Message });
                 }
             }
 
@@ -173,7 +173,7 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError($"Cannot delete ingredient");
 
-                    return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Ingredient", ErrorMessage = "Cannot update ingredient" });
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Ingredient", ErrorMessage = "Cannot delete ingredient" });
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -182,7 +182,7 @@ namespace PizzaPortal.WEB.Controllers
             {
                 this._logger.LogError(ex.Message);
 
-                return View("Error", new ErrorViewModel() { ErrorTitle = "Delete exception Ingredient", ErrorMessage = ex.Message });
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Ingredient", ErrorMessage = ex.Message });
             }
         }
 

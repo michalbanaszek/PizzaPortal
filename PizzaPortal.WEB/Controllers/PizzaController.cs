@@ -104,9 +104,7 @@ namespace PizzaPortal.WEB.Controllers
                     {
                         this._logger.LogError($"Cannot create pizza");
 
-                        ViewBag.ErrorMessage = $"Cannot create pizza";
-
-                        return View("Error");
+                        return View("Error", new ErrorViewModel() { ErrorTitle = "Create Pizza", ErrorMessage = "Cannot create pizza" });
                     }
 
                     return RedirectToAction(nameof(Details), new { id = pizza.Id });
@@ -116,7 +114,7 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError(ex.Message);
 
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Create Pizza", ErrorMessage = ex.Message });
                 }
             }
 
@@ -172,9 +170,7 @@ namespace PizzaPortal.WEB.Controllers
                     {
                         this._logger.LogError($"Cannot update this pizza, id: {id}");
 
-                        ViewBag.ErrorMessage = $"Cannot update this pizza, id: {id}";
-
-                        return View("Error");
+                        return View("Error", new ErrorViewModel() { ErrorTitle = "Update Pizza", ErrorMessage = $"Cannot update this pizza, id: {id}" });
                     }
 
                     return RedirectToAction(nameof(Index));
@@ -183,7 +179,7 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError(ex.Message);
 
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Update Pizza", ErrorMessage = ex.Message });
                 }
             }
 
@@ -223,7 +219,7 @@ namespace PizzaPortal.WEB.Controllers
 
                     ViewBag.ErrorMessage = $"Cannot delete this pizza, id: {id}";
 
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Pizza", ErrorMessage = $"Cannot delete this pizza, id: {id}" });
                 }
 
                 if (!string.IsNullOrEmpty(pizza.PhotoPath))
@@ -237,7 +233,7 @@ namespace PizzaPortal.WEB.Controllers
             {
                 this._logger.LogError(ex.Message);
 
-                return View("Error");
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Pizza", ErrorMessage = ex.Message });
             }
         }
 
@@ -309,7 +305,7 @@ namespace PizzaPortal.WEB.Controllers
             {
                 this._logger.LogError(ex.Message);
 
-                return View("Error");
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Manage Pizza Ingredients", ErrorMessage = ex.Message });
             }
 
             return RedirectToAction(nameof(Edit), new { Id = pizzaId });

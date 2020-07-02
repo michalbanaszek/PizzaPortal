@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.Model.Models;
@@ -104,7 +105,7 @@ namespace PizzaPortal.WEB.Controllers
                     {
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                        if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        if (_signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Super Admin")))
                         {
                             await this._userManager.ConfirmEmailAsync(user, token);
 
@@ -134,9 +135,9 @@ namespace PizzaPortal.WEB.Controllers
                 }
                 catch (Exception ex)
                 {
-                    this._logger.LogError($"Problem to send email. Message Error: {ex.Message}");
+                    this._logger.LogError(ex.Message);
 
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Register", ErrorMessage = ex.Message });
                 }
             }
 
@@ -324,20 +325,29 @@ namespace PizzaPortal.WEB.Controllers
 
                 if (user != null && await this._userManager.IsEmailConfirmedAsync(user))
                 {
-                    var token = await this._userManager.GeneratePasswordResetTokenAsync(user);
+                    try
+                    {
+                        var token = await this._userManager.GeneratePasswordResetTokenAsync(user);
 
-                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = viewModel.Email, token = token }, Request.Scheme);
+                        var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = viewModel.Email, token = token }, Request.Scheme);
 
-                    string subject = "Confirm reset password";
+                        string subject = "Confirm reset password";
 
-                    string message = "Please confirm reset password in your account by clicking this link:" +
-                                     $"<a href='{passwordResetLink}'>link</a>";
+                        string message = "Please confirm reset password in your account by clicking this link:" +
+                                         $"<a href='{passwordResetLink}'>link</a>";
 
-                    await this._emailService.SendEmailAsync(new EmailMessage() { ToAddress = viewModel.Email, Subject = subject, Content = message });
+                        await this._emailService.SendEmailAsync(new EmailMessage() { ToAddress = viewModel.Email, Subject = subject, Content = message });
 
-                    this._logger.LogInformation("User must confirm reset password.");
+                        this._logger.LogInformation("User must confirm reset password.");
 
-                    return View("ForgetPasswordConfirmation");
+                        return View("ForgetPasswordConfirmation");
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logger.LogError(ex.Message);
+
+                        return View("Error", new ErrorViewModel() { ErrorTitle = "Forget Password", ErrorMessage = ex.Message });
+                    }
                 }
 
                 return View("ForgetPasswordConfirmation");
@@ -375,22 +385,32 @@ namespace PizzaPortal.WEB.Controllers
 
                 if (user != null)
                 {
-                    var result = await this._userManager.ResetPasswordAsync(user, viewModel.Token, viewModel.Password);
+                    try
+                    {
+                        var result = await this._userManager.ResetPasswordAsync(user, viewModel.Token, viewModel.Password);
 
-                    if (result.Succeeded)
-                    {
-                        return View("ResetPasswordConfirmation");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
+                        if (result.Succeeded)
                         {
-                            ModelState.AddModelError(string.Empty, error.Description);
+                            return View("ResetPasswordConfirmation");
                         }
+                        else
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
 
-                        return View(viewModel);
+                            return View(viewModel);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logger.LogError(ex.Message);
+
+                        return View("Error", new ErrorViewModel() { ErrorTitle = "Reset Password", ErrorMessage = ex.Message });
                     }
                 }
+
                 return View("ResetPasswordConfirmation");
             }
             return View(viewModel);
@@ -403,13 +423,13 @@ namespace PizzaPortal.WEB.Controllers
             return View();
         }
 
-        [HttpGet]  
+        [HttpGet]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
-        [HttpPost]       
+        [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -421,21 +441,30 @@ namespace PizzaPortal.WEB.Controllers
                     return RedirectToAction("Login");
                 }
 
-                var result = await this._userManager.ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
-
-                if (!result.Succeeded)
+                try
                 {
-                    foreach (var error in result.Errors)
+                    var result = await this._userManager.ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
+
+                    if (!result.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+
+                        return View(viewModel);
                     }
 
-                    return View(viewModel);
+                    await this._signInManager.RefreshSignInAsync(user);
+
+                    return View("ChangePasswordConfirmation");
                 }
+                catch (Exception ex)
+                {
+                    this._logger.LogError(ex.Message);
 
-                await this._signInManager.RefreshSignInAsync(user);
-
-                return View("ChangePasswordConfirmation");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Change Password", ErrorMessage = ex.Message });
+                }
             }
 
             return View(viewModel);
@@ -446,7 +475,7 @@ namespace PizzaPortal.WEB.Controllers
         {
             return View();
         }
-   
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

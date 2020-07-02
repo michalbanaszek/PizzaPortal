@@ -53,19 +53,28 @@ namespace PizzaPortal.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await this._roleManager.CreateAsync(this._mapper.Map<IdentityRole>(viewModel));
-
-                if (!result.Succeeded)
+                try
                 {
-                    foreach (var error in result.Errors)
+                    var result = await this._roleManager.CreateAsync(this._mapper.Map<IdentityRole>(viewModel));
+
+                    if (!result.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
 
-                        return View(viewModel);
+                            return View(viewModel);
+                        }
                     }
-                }
 
-                return RedirectToAction(nameof(ListRoles));
+                    return RedirectToAction(nameof(ListRoles));
+                }
+                catch (DbUpdateException ex)
+                {
+                    this._logger.LogError(ex.Message);
+
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Create Role", ErrorMessage = ex.Message });
+                }
             }
 
             return View(viewModel);
@@ -106,21 +115,30 @@ namespace PizzaPortal.WEB.Controllers
                     return View("NotFound", NotFoundId(viewModel.Id));
                 }
 
-                role.Name = viewModel.Name;
-
-                var result = await this._roleManager.UpdateAsync(role);
-
-                if (!result.Succeeded)
+                try
                 {
-                    foreach (var error in result.Errors)
+                    role.Name = viewModel.Name;
+
+                    var result = await this._roleManager.UpdateAsync(role);
+
+                    if (!result.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
 
-                        return View(viewModel);
+                            return View(viewModel);
+                        }
                     }
-                }
 
-                return RedirectToAction(nameof(ListRoles));
+                    return RedirectToAction(nameof(ListRoles));
+                }
+                catch (DbUpdateException ex)
+                {
+                    this._logger.LogError(ex.Message);
+
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Update Role", ErrorMessage = ex.Message });
+                }
             }
 
             return View(viewModel);
@@ -173,35 +191,44 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", NotFoundId(roleId));
             }
 
-            for (int i = 0; i < viewModel.Items.Count; i++)
+            try
             {
-                var user = await this._userManager.FindByIdAsync(viewModel.Items[i].UserId);
+                for (int i = 0; i < viewModel.Items.Count; i++)
+                {
+                    var user = await this._userManager.FindByIdAsync(viewModel.Items[i].UserId);
 
-                IdentityResult result = null;
+                    IdentityResult result = null;
 
-                if (viewModel.Items[i].IsSelected && !(await this._userManager.IsInRoleAsync(user, role.Name)))
-                {
-                    result = await this._userManager.AddToRoleAsync(user, role.Name);
-                }
-                else if (!viewModel.Items[i].IsSelected && await this._userManager.IsInRoleAsync(user, role.Name))
-                {
-                    result = await this._userManager.RemoveFromRoleAsync(user, role.Name);
-                }
-                else
-                {
-                    continue;
-                }
-
-                if (result.Succeeded)
-                {
-                    if (i < (viewModel.Items.Count - 1))
-                        continue;
+                    if (viewModel.Items[i].IsSelected && !(await this._userManager.IsInRoleAsync(user, role.Name)))
+                    {
+                        result = await this._userManager.AddToRoleAsync(user, role.Name);
+                    }
+                    else if (!viewModel.Items[i].IsSelected && await this._userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        result = await this._userManager.RemoveFromRoleAsync(user, role.Name);
+                    }
                     else
-                        return RedirectToAction("EditRole", new { roleId = roleId });
-                }
-            }
+                    {
+                        continue;
+                    }
 
-            return RedirectToAction("EditRole", new { roleId = roleId });
+                    if (result.Succeeded)
+                    {
+                        if (i < (viewModel.Items.Count - 1))
+                            continue;
+                        else
+                            return RedirectToAction("EditRole", new { roleId = roleId });
+                    }
+                }
+
+                return RedirectToAction("EditRole", new { roleId = roleId });
+            }
+            catch (DbUpdateException ex)
+            {
+                this._logger.LogError(ex.Message);
+
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Edit Users In Role Role", ErrorMessage = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -221,15 +248,9 @@ namespace PizzaPortal.WEB.Controllers
 
                 if (!result.Succeeded)
                 {
-                    ErrorViewModel errorViewModel = new ErrorViewModel()
-                    {
-                        ErrorTitle = $"Delete Role, {role.Id}",
-                        ErrorMessage = $"Cannot delete this role, id: {role.Id}"
-                    };
+                    this._logger.LogError($"Cannot delete this role, id: {role.Id}");
 
-                    this._logger.LogError(errorViewModel.ErrorMessage);
-
-                    return View("Error", errorViewModel);
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Role", ErrorMessage = $"Cannot delete this role, id: {role.Id}" });
                 }
 
                 return RedirectToAction(nameof(ListRoles));
@@ -238,14 +259,7 @@ namespace PizzaPortal.WEB.Controllers
             {
                 this._logger.LogError(ex.Message);
 
-                ErrorViewModel errorViewModel = new ErrorViewModel()
-                {
-                    ErrorTitle = $"{role.Name} role is in use",
-                    ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role. " +
-                    $"If you want to delete this role, please remove the users from the role and then try to delete"
-                };
-
-                return View("Error", errorViewModel);
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Role", ErrorMessage = ex.Message });
             }
         }
 
@@ -289,7 +303,8 @@ namespace PizzaPortal.WEB.Controllers
             {
                 return View("NotFound", NotFoundId(viewModel.Id));
             }
-            else
+
+            try
             {
                 user.UserName = viewModel.UserName;
 
@@ -306,6 +321,12 @@ namespace PizzaPortal.WEB.Controllers
                 }
 
                 return View(viewModel);
+            }
+            catch (DbUpdateException ex)
+            {
+                this._logger.LogError(ex.Message);
+
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Edit User", ErrorMessage = ex.Message });
             }
         }
 
@@ -394,24 +415,33 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", NotFoundId(userId));
             }
 
-            var roles = await this._userManager.GetRolesAsync(user);
-            var result = await this._userManager.RemoveFromRolesAsync(user, roles);
-
-            if (!result.Succeeded)
+            try
             {
-                ModelState.AddModelError("", "Cannot remove user existing roles");
-                return View(viewModel);
+                var roles = await this._userManager.GetRolesAsync(user);
+                var result = await this._userManager.RemoveFromRolesAsync(user, roles);
+
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot remove user existing roles");
+                    return View(viewModel);
+                }
+
+                result = await this._userManager.AddToRolesAsync(user, viewModel.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot add selected roles to user");
+                    return View(viewModel);
+                }
+
+                return RedirectToAction("EditUser", new { Id = userId });
             }
-
-            result = await this._userManager.AddToRolesAsync(user, viewModel.Where(x => x.IsSelected).Select(y => y.RoleName));
-
-            if (!result.Succeeded)
+            catch (DbUpdateException ex)
             {
-                ModelState.AddModelError("", "Cannot add selected roles to user");
-                return View(viewModel);
-            }
+                this._logger.LogError(ex.Message);
 
-            return RedirectToAction("EditUser", new { Id = userId });
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Manage User Roles", ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet]
@@ -461,24 +491,33 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", NotFoundId(viewModel.UserId));
             }
 
-            var claims = await this._userManager.GetClaimsAsync(user);
-            var result = await this._userManager.RemoveClaimsAsync(user, claims);
-
-            if (!result.Succeeded)
+            try
             {
-                ModelState.AddModelError(string.Empty, "Cannot remove user existing claims");
-                return View(viewModel);
+                var claims = await this._userManager.GetClaimsAsync(user);
+                var result = await this._userManager.RemoveClaimsAsync(user, claims);
+
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Cannot remove user existing claims");
+                    return View(viewModel);
+                }
+
+                result = await this._userManager.AddClaimsAsync(user, viewModel.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));
+
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Cannot add selected claims to user");
+                    return View(viewModel);
+                }
+
+                return RedirectToAction("EditUser", new { Id = viewModel.UserId });
             }
-
-            result = await this._userManager.AddClaimsAsync(user, viewModel.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));
-
-            if (!result.Succeeded)
+            catch (DbUpdateException ex)
             {
-                ModelState.AddModelError(string.Empty, "Cannot add selected claims to user");
-                return View(viewModel);
-            }
+                this._logger.LogError(ex.Message);
 
-            return RedirectToAction("EditUser", new { Id = viewModel.UserId });
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Manage User Claims", ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet]

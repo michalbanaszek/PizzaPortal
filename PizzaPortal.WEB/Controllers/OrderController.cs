@@ -154,9 +154,7 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError($"Cannot delete this order, id: {id}");
 
-                    ViewBag.ErrorMessage = $"Cannot delete this order, id: {id}";
-
-                    return View("Error");
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Order", ErrorMessage = $"Cannot delete this order, id: {id}" });
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -166,7 +164,7 @@ namespace PizzaPortal.WEB.Controllers
             {
                 this._logger.LogError(ex.Message);
 
-                return View("Error");
+                return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Order", ErrorMessage = ex.Message });
             }
         }
     }
