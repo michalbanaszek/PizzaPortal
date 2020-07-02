@@ -3,9 +3,9 @@ using PizzaPortal.Model.ViewModels.Order;
 
 namespace PizzaPortal.WEB.Validators.Order
 {
-    public class OrderValidator : AbstractValidator<OrderItemViewModel>
+    public class OrderCreateValidator : AbstractValidator<OrderCreateViewModel>
     {
-        public OrderValidator()
+        public OrderCreateValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty();
             RuleFor(x => x.LastName).NotEmpty();

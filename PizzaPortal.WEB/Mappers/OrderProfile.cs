@@ -10,7 +10,10 @@ namespace PizzaPortal.WEB.Mappers
         public OrderProfile()
         {
             CreateMap<Order, OrderItemViewModel>().ReverseMap();
-            CreateMap<OrderDetail, OrderDetailViewModel>();
+            CreateMap<OrderDetail, OrderDetailItemViewModel>();
+            CreateMap<OrderCreateViewModel, Order>();
+            CreateMap<Order, OrderDetailViewModel>();
+            CreateMap<Order, OrderDeleteViewModel>();
         }
     }
 }

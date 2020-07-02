@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PizzaPortal.Model.ViewModels.Ingredient;
 
-namespace PizzaPortal.WEB.Validators.Pizza
+namespace PizzaPortal.WEB.Validators.Ingredient
 {
     public class IngredientEditValidator : AbstractValidator<IngredientEditViewModel>
     {
