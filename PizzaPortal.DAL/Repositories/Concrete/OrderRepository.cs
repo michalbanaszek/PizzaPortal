@@ -28,7 +28,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
                                              .ToListAsync();
         }
 
-        public async Task<Order> GetOrderSummaryByIdAsync(string orderId)
+        public async Task<Order> GetOrderByIdWithInclude(string orderId)
         {
             return await this._context.Orders.Include(x => x.OrderDetails)
                                                 .ThenInclude(x => x.Pizza)
@@ -45,7 +45,7 @@ namespace PizzaPortal.DAL.Repositories.Concrete
                                              .ToListAsync();
         }
 
-        public async Task NewOrderAsync(Order order)
+        public async Task CreateOrderWithDetailsAsync(Order order)
         {
             order.OrderPlaced = DateTime.Now;
             decimal totalPrice = 0M;
