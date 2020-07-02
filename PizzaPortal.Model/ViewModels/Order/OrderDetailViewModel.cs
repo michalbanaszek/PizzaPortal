@@ -5,18 +5,7 @@ using System.Collections.Generic;
 
 namespace PizzaPortal.Model.ViewModels.Order
 {
-    public class OrderIndexViewModel : BaseViewModel
-    {
-        public OrderIndexViewModel()
-        {
-            PageTitle = "Checkout";
-            Items = new List<OrderItemViewModel>();
-        }
-
-        public List<OrderItemViewModel> Items { get; set; }    
-    }
-
-    public class OrderItemViewModel
+    public class OrderDetailViewModel : BaseViewModel
     {
         public string Id { get; set; }
         public string FirstName { get; set; }

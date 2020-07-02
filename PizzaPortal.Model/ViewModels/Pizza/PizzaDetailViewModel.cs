@@ -1,6 +1,6 @@
 ﻿namespace PizzaPortal.Model.ViewModels.Pizza
 {
-    public class PizzaDetailsViewModel : BaseViewModel
+    public class PizzaDetailViewModel : BaseViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -1,22 +1,21 @@
-﻿using PizzaPortal.Model.Models;
-using PizzaPortal.Model.ViewModels.Pizza;
+﻿using PizzaPortal.Model.ViewModels.Pizza;
 using System.Collections.Generic;
 
 namespace PizzaPortal.Model.ViewModels.ShoppingCart
 {
-    public class ShoppingCartViewModel : BaseViewModel
+    public class ShoppingCartIndexViewModel : BaseViewModel
     {
-        public ShoppingCartViewModel()
+        public ShoppingCartIndexViewModel()
         {
             PageTitle = "Index Cart";
-            Items = new List<ItemShoppingCartViewModel>();
+            Items = new List<ShoppingCartItemViewModel>();
         }
 
-        public List<ItemShoppingCartViewModel> Items { get; set; }
+        public List<ShoppingCartItemViewModel> Items { get; set; }
         public decimal ShoppingCartTotal { get; set; }
     }
 
-    public class ItemShoppingCartViewModel
+    public class ShoppingCartItemViewModel
     {
         public PizzaItemViewModel Pizza { get; set; }
         public int Amount { get; set; }
