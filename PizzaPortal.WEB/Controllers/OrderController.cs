@@ -42,7 +42,7 @@ namespace PizzaPortal.WEB.Controllers
             OrderIndexViewModel viewModel = new OrderIndexViewModel();
 
             if (isSuperAdmin == true || isAdmin == true)
-            {            
+            {
                 viewModel.Items = this._mapper.Map<List<OrderItemViewModel>>(await this._orderService.GetOrdersAsync());
             }
             else
@@ -56,7 +56,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var order = await this._orderService.GetOrderSummaryByIdAsync(id);
+            var order = await this._orderService.GetOrderByIdWithInclude(id);
 
             if (order == null)
             {
@@ -69,7 +69,7 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", errorViewModel);
             }
 
-            return View(this._mapper.Map<OrderItemViewModel>(order));
+            return View(this._mapper.Map<OrderDetailViewModel>(order));
         }
 
         [HttpGet]
@@ -79,9 +79,9 @@ namespace PizzaPortal.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Checkout(OrderItemViewModel viewModel)
+        public async Task<IActionResult> Checkout(OrderCreateViewModel viewModel)
         {
-            var userId = this._userManager.GetUserId(HttpContext.User);          
+            var userId = this._userManager.GetUserId(HttpContext.User);
 
             var cartItems = await this._shoppingCartService.GetShoppingCartItemsAsync();
             this._shoppingCartService.ShoppingCartItems = cartItems;
@@ -93,14 +93,23 @@ namespace PizzaPortal.WEB.Controllers
 
             if (ModelState.IsValid)
             {
-                var orders = this._mapper.Map<Order>(viewModel);
-                orders.UserId = userId;
+                try
+                {
+                    var orders = this._mapper.Map<Order>(viewModel);
+                    orders.UserId = userId;
 
-                await this._orderService.NewOrderAsync(orders);
+                    await this._orderService.CreateOrderWithDetailsAsync(orders);
 
-                await this._shoppingCartService.ClearCartAsync();
+                    await this._shoppingCartService.ClearCartAsync();
 
-                return RedirectToAction("CheckoutComplete");
+                    return RedirectToAction("CheckoutComplete");
+                }
+                catch (DbUpdateException ex)
+                {
+                    this._logger.LogError(ex.Message);
+
+                    return View("Error", new ErrorViewModel() { ErrorTitle = "Checkout", ErrorMessage = ex.Message });
+                }
             }
 
             return View(viewModel);
@@ -114,7 +123,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            var order = await this._orderService.GetByIdAsync(id);
+            var order = await this._orderService.GetOrderByIdWithInclude(id);
 
             if (order == null)
             {
@@ -126,8 +135,8 @@ namespace PizzaPortal.WEB.Controllers
 
                 return View("NotFound", errorViewModel);
             }
-         
-            return View(this._mapper.Map<OrderItemViewModel>(order));
+
+            return View(this._mapper.Map<OrderDeleteViewModel>(order));
         }
 
         [HttpPost, ActionName("Delete")]

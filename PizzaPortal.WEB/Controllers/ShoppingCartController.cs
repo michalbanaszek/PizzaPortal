@@ -26,9 +26,9 @@ namespace PizzaPortal.WEB.Controllers
 
             _shoppingCartService.ShoppingCartItems = items;
 
-            var shoppingCartViewModel = new ShoppingCartViewModel
+            var shoppingCartViewModel = new ShoppingCartIndexViewModel
             {
-                Items = this._mapper.Map<List<ItemShoppingCartViewModel>>(items),
+                Items = this._mapper.Map<List<ShoppingCartItemViewModel>>(items),
                 ShoppingCartTotal = await _shoppingCartService.GetShoppingCartTotalAsync()
             };
             return View(shoppingCartViewModel);

@@ -74,7 +74,7 @@ namespace PizzaPortal.WEB.Controllers
                 return View("NotFound", NotFoundId(id));
             }
 
-            return View(this._mapper.Map<PizzaDetailsViewModel>(pizza));
+            return View(this._mapper.Map<PizzaDetailViewModel>(pizza));
         }
 
         [HttpGet]
