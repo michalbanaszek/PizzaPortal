@@ -20,9 +20,9 @@ namespace PizzaPortal.BLL.Services.Concrete
             return this._orderRepository.GetOrdersAsync();
         }
 
-        public Task<Order> GetOrderSummaryByIdAsync(string orderId)
+        public Task<Order> GetOrderByIdWithInclude(string orderId)
         {
-            return this._orderRepository.GetOrderSummaryByIdAsync(orderId);
+            return this._orderRepository.GetOrderByIdWithInclude(orderId);
         }
 
         public Task<List<Order>> GetUserOrdersAsync(string userId)
@@ -30,9 +30,9 @@ namespace PizzaPortal.BLL.Services.Concrete
             return this._orderRepository.GetUserOrdersAsync(userId);
         }
 
-        public async Task NewOrderAsync(Order order)
+        public async Task CreateOrderWithDetailsAsync(Order order)
         {
-            await this._orderRepository.NewOrderAsync(order);
+            await this._orderRepository.CreateOrderWithDetailsAsync(order);
         }
     }
 }
