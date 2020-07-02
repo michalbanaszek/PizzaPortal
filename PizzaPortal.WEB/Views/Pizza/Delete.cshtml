@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Delete";
-    var photoPath = "~/images/pizzas/" + (Model.PhotoPath ?? "noimage.jpg");
+    var photoPath = "~/images/pizzas/" + (string.IsNullOrEmpty(Model.PhotoPath) == true ? "noimage.jpg" : Model.PhotoPath);
 }
 
 <h1 class="text-center">Delete</h1>
