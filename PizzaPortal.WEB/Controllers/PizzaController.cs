@@ -217,8 +217,6 @@ namespace PizzaPortal.WEB.Controllers
                 {
                     this._logger.LogError($"Cannot delete this pizza, id: {id}");
 
-                    ViewBag.ErrorMessage = $"Cannot delete this pizza, id: {id}";
-
                     return View("Error", new ErrorViewModel() { ErrorTitle = "Delete Pizza", ErrorMessage = $"Cannot delete this pizza, id: {id}" });
                 }
 
