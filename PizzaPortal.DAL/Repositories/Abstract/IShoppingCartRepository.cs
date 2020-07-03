@@ -11,7 +11,8 @@ namespace PizzaPortal.DAL.Repositories.Abstract
 
         Task<List<ShoppingCartItem>> GetShoppingCartItemsAsync();
         Task AddToCartAsync(Pizza pizza, int amount);
-        Task<int> RemoveFromCartAsync(Pizza pizza);
+        Task RemoveFromCartAsync(Pizza pizza);
+        Task RemoveItemFromCartAsync(string pizzaId);
         Task ClearCartAsync();
         Task<decimal> GetShoppingCartTotalAsync();
     }

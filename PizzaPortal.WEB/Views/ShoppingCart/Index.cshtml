@@ -7,27 +7,26 @@
     <div class="row">
         <h2>Your shopping cart</h2>
 
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Amount</th>
-                    <th>Pizza</th>
-                    <th class="text-right">Price</th>
-                    <th class="text-right">SubTotal</th>
-                    <th></th>
-                </tr>
-            </thead>
+        <table class="table table-bordered">          
             <tbody>
                 @foreach (var line in Model.Items)
                 {
-                    <tr>
-                        <td class="text-center">@line.Amount</td>
-                        <td class="text-left">@line.Pizza.Name</td>
-                        <td class="text-right">@line.Pizza.Price.ToString("c")</td>
-                        <td class="text-right">
+                    var photoPath = "~/images/pizzas/" + (line.Pizza.PhotoPath ?? "noimage.jpg");
+
+                    <tr class="text-center">
+                        <td><img src="@photoPath" asp-append-version="true" alt="pizza" style="height: auto; width:100px;"/></td>
+                        <td>@line.Pizza.Name</td>
+                        <td>@line.Pizza.Price.ToString("c") x @line.Amount</td>
+                        <td>
                             @((line.Amount * line.Pizza.Price).ToString("c"))
                         </td>
-                        <td class="text-center"><a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-minus-square"></i></a></td>
+                        <td>
+                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-minus-square fa-2x"></i></a>
+                            <a class="text-primary" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-plus-square fa-2x"></i></a>
+                        </td>
+                        <td>
+                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-trash fa-2x"></i></a>
+                        </td>
                     </tr>
                 }
             </tbody>

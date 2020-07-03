@@ -34,14 +34,19 @@ namespace PizzaPortal.BLL.Services.Concrete
             await this._shoppingCartRepository.ClearCartAsync();
         }
 
-        public async Task<int> RemoveFromCartAsync(Pizza pizza)
+        public async Task RemoveFromCartAsync(Pizza pizza)
         {
-            return await this._shoppingCartRepository.RemoveFromCartAsync(pizza);
+            await this._shoppingCartRepository.RemoveFromCartAsync(pizza);
         }
 
         public async Task<decimal> GetShoppingCartTotalAsync()
         {
             return await this._shoppingCartRepository.GetShoppingCartTotalAsync();
+        }
+
+        public async Task RemoveItemFromCartAsync(string pizzaId)
+        {
+            await this._shoppingCartRepository.RemoveItemFromCartAsync(pizzaId);
         }
     }
 }

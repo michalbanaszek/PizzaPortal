@@ -70,27 +70,25 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             await this._context.SaveChangesAsync();
         }
 
-        public async Task<int> RemoveFromCartAsync(Pizza pizza)
+        public async Task RemoveFromCartAsync(Pizza pizza)
         {
             var shoppingCartItem = await this._context.ShoppingCartItems
                                              .SingleOrDefaultAsync(x => x.Pizza.Id == pizza.Id &&
-                                                                   x.ShoppingCartId == ShoppingCartId);
-            var localAmount = 0;
+                                                                   x.ShoppingCartId == ShoppingCartId);       
 
             if (shoppingCartItem != null)
             {
                 if (shoppingCartItem.Amount > 1)
                 {
                     shoppingCartItem.Amount--;
-                    localAmount = shoppingCartItem.Amount;
+
+                    await base.UpdateAsync(shoppingCartItem);                 
                 }
                 else
                 {
                     await base.DeleteAsync(shoppingCartItem.Id);
                 }
             }
-
-            return localAmount;
         }
 
         public async Task ClearCartAsync()
@@ -107,6 +105,15 @@ namespace PizzaPortal.DAL.Repositories.Concrete
             var total = await _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId)
                 .Select(c => c.Pizza.Price * c.Amount).SumAsync();
             return total;
+        }
+
+        public async Task RemoveItemFromCartAsync(string pizzaId)
+        {
+            var shoppingCartItem = await this._context.ShoppingCartItems
+                                    .SingleOrDefaultAsync(x => x.Pizza.Id == pizzaId &&
+                                                          x.ShoppingCartId == ShoppingCartId);
+
+            await base.DeleteAsync(shoppingCartItem.Id);
         }
     }
 }

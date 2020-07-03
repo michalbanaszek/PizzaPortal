@@ -58,6 +58,18 @@ namespace PizzaPortal.WEB.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> RemoveItemFromShoppingCart(string pizzaId)
+        {
+            var selectedPizza = await this._pizzaService.GetByIdAsync(pizzaId);
+
+            if (selectedPizza != null)
+            {
+                await this._shoppingCartService.RemoveItemFromCartAsync(pizzaId);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> ClearCart()
         {
             await this._shoppingCartService.ClearCartAsync();
