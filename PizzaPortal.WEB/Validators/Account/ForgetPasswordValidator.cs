@@ -3,7 +3,7 @@ using PizzaPortal.Model.ViewModels.Account;
 
 namespace PizzaPortal.WEB.Validators.Account
 {
-    public class ForgetPasswordValidator : AbstractValidator<ForgetPasswordViewModel>
+    public class ForgetPasswordValidator : AbstractValidator<ForgotPasswordViewModel>
     {
         public ForgetPasswordValidator()
         {
