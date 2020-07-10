@@ -1,7 +1,12 @@
 ﻿namespace PizzaPortal.Model.ViewModels.Account
 {
-    public class ForgetPasswordViewModel : BaseViewModel
+    public class ForgotPasswordViewModel : BaseViewModel
     {
+        public ForgotPasswordViewModel()
+        {
+            PageTitle = "Forgot Password";
+        }
+
         public string Email { get; set; }
     }
 }
