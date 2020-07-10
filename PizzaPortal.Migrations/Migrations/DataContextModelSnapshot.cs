@@ -323,7 +323,7 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -331,7 +331,7 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -339,7 +339,7 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -347,12 +347,12 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -360,7 +360,7 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PizzaPortal.Model.Models.Order", b =>
@@ -368,7 +368,7 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PizzaPortal.Model.Models.OrderDetail", b =>
@@ -376,12 +376,12 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("PizzaPortal.Model.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PizzaPortal.Model.Models.Pizza", "Pizza")
                         .WithMany()
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PizzaPortal.Model.Models.Pizza", b =>
@@ -389,20 +389,20 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("PizzaPortal.Model.Models.Category", "Category")
                         .WithMany("Pizzas")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PizzaPortal.Model.Models.PizzaIngredient", b =>
                 {
                     b.HasOne("PizzaPortal.Model.Models.Ingredient", "Ingredient")
-                        .WithMany()
+                        .WithMany("PizzaIngredients")
                         .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PizzaPortal.Model.Models.Pizza", "Pizza")
-                        .WithMany()
+                        .WithMany("PizzaIngredients")
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PizzaPortal.Model.Models.ShoppingCartItem", b =>
@@ -410,7 +410,7 @@ namespace PizzaPortal.Migrations.Migrations
                     b.HasOne("PizzaPortal.Model.Models.Pizza", "Pizza")
                         .WithMany()
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

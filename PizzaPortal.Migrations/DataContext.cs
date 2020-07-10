@@ -15,10 +15,10 @@ namespace PizzaPortal.Migrations
         {
             base.OnModelCreating(modelBuilder);
 
-            //foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            //{
-            //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-            //}
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Cascade;
+            }
         }
 
         public DbSet<Pizza> Pizzas { get; set; }
