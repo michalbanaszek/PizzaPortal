@@ -4,66 +4,84 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Pizza</h4>
+<h1 class="text-center">Create</h1>
 <hr />
+
+<h4 class="text-center">Pizza</h4>
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form enctype="multipart/form-data" asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
 
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="@Model.CategoryId" class="control-label">Category</label>
-                <select asp-for="@Model.CategoryId"
-                        asp-items="@(new SelectList(Model.Categories,"Id","Name"))" class="custom-select">
-                    <option value="" hidden disabled selected>Select Category</option>
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group form-check">
-                <input asp-for="IsPreferredPizza" class="form-check-input" type="checkbox">
-                <label asp-for="IsPreferredPizza" class="form-check-label">
-                    IsPreferredPizza
-                </label>
-            </div>  
-            
-            <div class="form-group">
-                <label asp-for="Photo" class="control-label"></label>
-                <div class="custom-file">
-                    <input asp-for="Photo" type="file" class="form-control custom-file-input" />
-                    <label class="custom-file-label">Choose File...</label>
+                <label asp-for="Name" class="col-md-2 offset-md-2 control-label"></label>
+                <div class="col-md-8 offset-md-2">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Price" class="col-md-2 offset-md-2 control-label"></label>
+                <div class="col-md-8 offset-md-2">
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="col-md-2 offset-md-2 control-label"></label>
+                <div class="col-md-8 offset-md-2">
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CategoryId" class="col-md-2 offset-md-2 control-label">Category</label>
+                <div class="col-md-8 offset-md-2">
+                    <select asp-for="@Model.CategoryId"
+                            asp-items="@(new SelectList(Model.Categories,"Id","Name"))" class="custom-select">
+                        <option value="" hidden disabled selected>Select Category</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Photo" class="col-md-2 offset-md-2 control-label"></label>
+                <div class="col-md-8 offset-md-2">
+                    <div class="custom-file">
+                        <input asp-for="Photo" type="file" class="form-control custom-file-input" />
+                        <label class="custom-file-label">Choose File...</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-check">
+                <div class="col-md-8 offset-md-2">
+                    <input asp-for="IsPreferredPizza" class="form-check-input" type="checkbox">
+                    <label asp-for="IsPreferredPizza" class="form-check-label">
+                        IsPreferredPizza
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8 offset-md-2">
+                    <input type="submit" value="Create" class="btn btn btn-block btn-primary" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-center">
+                    <a asp-action="Index">Back to List</a>
+                </div>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 

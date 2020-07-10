@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PizzaPortal.WEB</title>
+    <title>@ViewData["Title"] - Pizza</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -19,6 +19,7 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/account/login.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
@@ -51,31 +52,20 @@
                     <ul class="navbar-nav">
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin") || User.IsInRole("Super Admin"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                                    Manage
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Administration" asp-action="ListRoles">
-                                        Roles
+                                <li class="nav-item">
+                                    <a class="nav-link text-info" asp-controller="Administration" asp-action="AdminPanel">
+                                        Admin Panel
                                     </a>
-                                    <a class="dropdown-item" asp-controller="Administration" asp-action="ListUsers">
-                                        Users
-                                    </a>
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
-                                        Change Password
-                                    </a>
-                                </div>
-                            </li>
+                                </li>
                         }
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
 
-                        @await Component.InvokeAsync("ShoppingCartSummary")
-
                         @if (signInManager.IsSignedIn(User))
                         {
+                            @await Component.InvokeAsync("ShoppingCartSummary")
+
                             <li class="nav-item">
                                 <form method="post" asp-controller="Account" asp-action="Logout">
                                     <button type="submit" class="nav-link btn btn-link">
@@ -109,7 +99,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - PizzaPortal
+            <div class="text-center">&copy; 2020 - Pizza Portal</div>
         </div>
     </footer>
 

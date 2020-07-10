@@ -5,22 +5,22 @@
     var photoPath = "~/images/pizzas/" + (Model.PhotoPath ?? "noimage.jpg");
 }
 
-<div class="row justify-content-center">
-    <div class="col-sm-8">
+<div class="row">
+    <div class="col-md-4 offset-md-4">
         <div class="card">
             <div class="card-header">
-                <h1 class="text-center">@Model.Name</h1>
+                <h5 class="text-center text-dark">@Model.Id</h5>
             </div>
-
+            <img class="card-img-top bg-dark" src="@photoPath" asp-append-version="true" />
             <div class="card-body text-center">
-                <img class="card-img-top" src="@photoPath" asp-append-version="true" />
-                <h4>Pizza ID : @Model.Id</h4>
-                <h4>Price : @Model.Price</h4>
+                <h3 class="card-title text-info">@Model.Name</h3>
+                <h5>@Model.Price.ToString("c")</h5>
             </div>
-            <div class="card-footer text-center">             
+            <div class="card-footer text-center">
                 <a asp-controller="Pizza" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
                 <a asp-controller="Pizza" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
             </div>
+
         </div>
     </div>
 </div>

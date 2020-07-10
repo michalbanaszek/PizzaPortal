@@ -4,11 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<h3>@Model.CurrentCategory</h3>
+<h1 class="text-center">Pizzas</h1>
+<hr />
+<h3 class="text-center mb-5">Category: @Model.CurrentCategory</h3>
 
 <div class="row">
     @foreach (var pizza in Model.Items)

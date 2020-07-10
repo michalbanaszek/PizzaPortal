@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<h1 class="text-center">Admin Panel</h1>
+<hr />
+
+<div class="row">
+
+        <div class="col-md-4">
+            <div>
+                <h3>Create</h3>
+                <h5><a asp-controller="Pizza" asp-action="Create">Pizza</a></h5>
+                <h5><a asp-controller="Category" asp-action="Create">Category</a></h5>
+                <h5><a asp-controller="Ingredient" asp-action="Create">Ingredient</a></h5>
+                <h5><a asp-controller="PizzaIngredient" asp-action="Create">PizzaIngredient</a></h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <h3>Users & Roles</h3>
+                <h5><a asp-controller="Administration" asp-action="ListUsers">Users</a></h5>
+                <h5><a asp-controller="Administration" asp-action="ListRoles">Roles</a></h5>
+                <h5><a asp-controller="Account" asp-action="ChangePassword">Change Password</a></h5>
+                <h5><a asp-controller="Account" asp-action="ForgotPassword">Forgot Password</a></h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <h3>Order</h3>
+                <h5><a asp-controller="Order" asp-action="Index">Orders</a></h5>
+            </div>
+        </div>
+
+</div>
+
+
+

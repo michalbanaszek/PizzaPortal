@@ -5,72 +5,74 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">You are just one step away from ordering your pizzas.</h3>
+            <h1 class="text-center">Order Address</h1>
+            <hr />
         </div>
+
         <div class="col-md-12">
             <div asp-validation-for="All"></div>
 
             <form asp-action="Checkout" method="post" class="form-horizontal" role="form">
 
                 <div class="form-group">
-                    <label asp-for="LastName" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="LastName" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="LastName" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="FirstName" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="FirstName" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="FirstName" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Email" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="Email" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="AddressLine1" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="AddressLine1" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="AddressLine1" class="form-control" />
                         <span asp-validation-for="AddressLine1" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="AddressLine2" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="AddressLine2" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="AddressLine2" class="form-control" />
                         <span asp-validation-for="AddressLine2" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="ZipCode" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="ZipCode" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="ZipCode" class="form-control" />
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
-                    <div class="col-md-5">
+                    <label asp-for="PhoneNumber" class="col-md-2 offset-2 control-label"></label>
+                    <div class="col-md-8 offset-2">
                         <input asp-for="PhoneNumber" class="form-control" />
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="btn-group col-md-offset-2 col-md-8">
-                        <input class="btn btn-success" type="submit" value="Complete order" />
+                    <div class="col-md-8 offset-2">
+                        <input class="btn btn-block btn-success" type="submit" value="Complete order" />
                     </div>
                 </div>
 

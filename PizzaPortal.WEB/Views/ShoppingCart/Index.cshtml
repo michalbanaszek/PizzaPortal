@@ -3,47 +3,75 @@
 @{
     ViewData["Title"] = "Index";
 }
+<h1 class="text-center">Your shopping cart</h1>
+<hr />
 
-    <div class="row">
-        <h2>Your shopping cart</h2>
-
-        <table class="table table-bordered">          
-            <tbody>
-                @foreach (var line in Model.Items)
-                {
-                    var photoPath = "~/images/pizzas/" + (line.Pizza.PhotoPath ?? "noimage.jpg");
-
-                    <tr class="text-center">
-                        <td><img src="@photoPath" asp-append-version="true" alt="pizza" style="height: auto; width:100px;"/></td>
-                        <td>@line.Pizza.Name</td>
-                        <td>@line.Pizza.Price.ToString("c") x @line.Amount</td>
-                        <td>
-                            @((line.Amount * line.Pizza.Price).ToString("c"))
-                        </td>
-                        <td>
-                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-minus-square fa-2x"></i></a>
-                            <a class="text-primary" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-plus-square fa-2x"></i></a>
-                        </td>
-                        <td>
-                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-trash fa-2x"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-right">Total:</td>
-                    <td class="text-right">
-                        @Model.ShoppingCartTotal.ToString("c")
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div class="text-left">
-            <div class="btn-group">
-                    <a class="btn btn-link" asp-controller="Pizza" asp-action="Index">Continue</a>
-                    <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Check out</a>        
+<div class="row">
+    @if (!Model.Items.Any())
+    {
+        <div class="col-md-12">
+            <div class="text-center">
+                <h4>Your cart is empty.</h4>
             </div>
         </div>
-    </div>
+        <div class="col-md-12">
+            <div class="text-left">
+                <div class="btn-group">
+                    <a class="btn btn-link" asp-controller="Pizza" asp-action="Index">Back</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12">
+
+            @foreach (var line in Model.Items)
+            {
+                var photoPath = "~/images/pizzas/" + (line.Pizza.PhotoPath ?? "noimage.jpg");
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <img src="@photoPath" asp-append-version="true" alt="pizza" />
+                    </div>
+                    <div>
+                        @line.Pizza.Name
+                    </div>
+                    <div>
+                        @line.Pizza.Price.ToString("c") x @line.Amount
+                    </div>
+                    <div>
+                        @((line.Amount * line.Pizza.Price).ToString("c"))
+                    </div>
+                    <div>
+                        <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-minus-square fa-2x"></i></a>
+                        <a class="text-primary" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-plus-square fa-2x"></i></a>
+                    </div>
+                    <div>
+                        <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id"><i class="fa fa-trash fa-2x"></i></a>
+                    </div>
+                </div>
+                <hr />
+            }
+
+            <div>
+                <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group" role="group" aria-label="First group">
+                        <a class="btn btn-link text-left" asp-controller="Pizza" asp-action="Index">Continue</a>
+                    </div>
+                    <div class="input-group">
+                        <a class="btn btn-success text-right" asp-controller="Order" asp-action="Checkout">Check out</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <style>
+            img {
+                max-width: 100px;
+                height: auto;
+            }
+        </style>
+    }
+</div>

@@ -1,30 +1,56 @@
 ﻿@model LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Model.PageTitle;
 }
 
 <div class="row">
-    <div class="col-md-6">
-        <h1>Local Account</h1>
-        <h2>Please log in before placing an order.</h2>
-        <form method="post">
-            <h4>Enter your details below</h4>
+    <div class="col-md-12">
+        <h1 class="text-center">Local Account</h1>
+        <h4 class="text-center">Please log in before placing an order.</h4>
+
+        @{
+            if (Model.ExternalLogins.Any())
+            {
+                <form method="post" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                    <div class="text-center">
+                        @foreach (var provider in Model.ExternalLogins)
+                        {
+                            if (provider.Name == "Google")
+                            {
+                                <button type="submit" class="btn btn-link" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                    <i class="fa fa-google" aria-hidden="true"></i>
+                                </button>
+
+                            }
+                            else if (provider.Name == "Facebook")
+                            {
+                                <button type="submit" class="btn btn-link" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </button>
+                            }
+                        }
+                    </div>
+                </form>
+            }
+        }
+
+        <form method="post">         
             <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
 
             <input type="hidden" asp-for="ReturnUrl" />
 
             <div class="form-group">
-                <label asp-for="Email" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
+                <label asp-for="Email" class="col-md-2 offset-md-2 control-label"></label>
+                <div class="col-md-8 offset-md-2">
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="Password" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
+                <label asp-for="Password" class="col-md-2 offset-md-2 control-label"></label>
+                <div class="col-md-8 offset-md-2">
                     <input asp-for="Password" type="password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
@@ -32,7 +58,7 @@
 
             <div class="form-group">
                 <div class="checkbox">
-                    <label asp-for="RememberMe" class="col-md-4 control-label">
+                    <label asp-for="RememberMe" class="col-md-8 offset-md-2 control-label">
                         <input asp-for="RememberMe" />
                         @Html.DisplayNameFor(m => m.RememberMe)
                     </label>
@@ -40,35 +66,16 @@
             </div>
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-success" value="Login" />
+                <div class="col-md-8 offset-md-2">
+                    <input type="submit" class="btn btn-block btn-success" value="Log in" />
                 </div>
             </div>
 
-            <div class="form-group">
-                <a asp-controller="Account" asp-action="ForgotPassword">Forgot Password?</a>
+            <div class="form-group">  
+                <div class="text-center">
+                    <a asp-controller="Account" asp-action="ForgotPassword">Forgot Password?</a>
+                </div>
             </div>
         </form>
-    </div>
-    <div class="col-md-6">
-        <h1>External Login</h1>
-        <hr />
-        @{
-            if (Model.ExternalLogins.Any())
-            {
-                <form method="post" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
-                    <div>
-                        @foreach (var provider in Model.ExternalLogins)
-                        {
-                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Login using your @provider.DisplayName account">@provider.DisplayName</button>
-                        }
-                    </div>
-                </form>
-            }
-            else
-            {
-                <div>No external logins configured.</div>
-            }
-        }
     </div>
 </div>
