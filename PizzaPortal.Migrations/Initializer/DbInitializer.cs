@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaPortal.Model.Models;
 using System;
@@ -88,6 +87,7 @@ namespace PizzaPortal.Migrations.Initializer
                 Price = 7.95M,
                 Description = "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
                 IsPreferredPizza = true,
+                PhotoPath = "pizza1.png",
                 Category = category2,
             };
             var pizza2 = new Pizza
@@ -96,6 +96,7 @@ namespace PizzaPortal.Migrations.Initializer
                 Price = 9.95M,
                 Description = "Lorem Ipsum has been the industry's standard dummy text ever since the 1600s, when an unknown printer took a galley of type and scrambled ",
                 IsPreferredPizza = true,
+                PhotoPath = "pizza2.png",
                 Category = category1,
             };
             var pizza3 = new Pizza
@@ -104,6 +105,7 @@ namespace PizzaPortal.Migrations.Initializer
                 Price = 8.95M,
                 Description = "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
                 IsPreferredPizza = true,
+                PhotoPath = "pizza3.png",
                 Category = category1,
             };
             var pizza4 = new Pizza
@@ -112,6 +114,7 @@ namespace PizzaPortal.Migrations.Initializer
                 Price = 4.95M,
                 Description = "Lorem Ipsum has been the industry's standard dummy text ever since the 1600s, when an unknown printer took a galley of type and scrambled ",
                 IsPreferredPizza = false,
+                PhotoPath = "pizza4.png",
                 Category = category1,
             };
             var pizza5 = new Pizza
@@ -120,6 +123,7 @@ namespace PizzaPortal.Migrations.Initializer
                 Price = 6.95M,
                 Description = "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
                 IsPreferredPizza = false,
+                PhotoPath = "pizza5.png",
                 Category = category1,
             };
             var pizza6 = new Pizza
@@ -128,6 +132,7 @@ namespace PizzaPortal.Migrations.Initializer
                 Price = 3.95M,
                 Description = "Lorem Ipsum has been the industry's standard dummy text ever since the 1600s, when an unknown printer took a galley of type and scrambled ",
                 IsPreferredPizza = false,
+                PhotoPath = "pizza6.png",
                 Category = category2,
             };
 
@@ -151,15 +156,15 @@ namespace PizzaPortal.Migrations.Initializer
                 userManager.CreateAsync(user, userPassword).Wait();
             }
 
-            var ing1 = new Ingredient { Name = "Ser" };
-            var ing2 = new Ingredient { Name = "Szynka" };
-            var ing3 = new Ingredient { Name = "Pieczarki" };
-            var ing4 = new Ingredient { Name = "Ananas" };
-            var ing5 = new Ingredient { Name = "Oliwki" };
+            var ing1 = new Ingredient { Name = "Cheese" };
+            var ing2 = new Ingredient { Name = "Ham" };
+            var ing3 = new Ingredient { Name = "Mushrooms" };
+            var ing4 = new Ingredient { Name = "Pineapple" };
+            var ing5 = new Ingredient { Name = "Olives" };
             var ing6 = new Ingredient { Name = "Kebab" };
-            var ing7 = new Ingredient { Name = "Pomidory" };
-            var ing8 = new Ingredient { Name = "Cebula" };
-            var ing9 = new Ingredient { Name = "Kurczak" };
+            var ing7 = new Ingredient { Name = "Tomatoes" };
+            var ing8 = new Ingredient { Name = "Onion" };
+            var ing9 = new Ingredient { Name = "Chicken" };
             var ing10 = new Ingredient { Name = "Salami" };
 
             var ingredients = new List<Ingredient>()
@@ -231,7 +236,7 @@ namespace PizzaPortal.Migrations.Initializer
             };
 
             context.Categories.AddRange(categories);
-            context.Pizzas.AddRange(pizzas);         
+            context.Pizzas.AddRange(pizzas);
             context.Orders.AddRange(orders);
             context.OrderDetails.AddRange(orderDetails);
             context.Ingredients.AddRange(ingredients);
@@ -265,7 +270,7 @@ namespace PizzaPortal.Migrations.Initializer
             var orderDetails = context.OrderDetails.ToList();
             context.OrderDetails.RemoveRange(orderDetails);
 
-            var orders = context.Orders.ToList();            
+            var orders = context.Orders.ToList();
             context.Orders.RemoveRange(orders);
 
             var pizzas = context.Pizzas.ToList();
