@@ -521,6 +521,12 @@ namespace PizzaPortal.WEB.Controllers
         }
 
         [HttpGet]
+        public IActionResult AdminPanel()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {

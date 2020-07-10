@@ -7,7 +7,6 @@ using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.Model.Models;
 using PizzaPortal.Model.ViewModels.Category;
 using PizzaPortal.Model.ViewModels.Error;
-using PizzaPortal.Model.ViewModels.Ingredient;
 using PizzaPortal.Model.ViewModels.Pizza;
 using System;
 using System.Collections.Generic;

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PizzaPortal.BLL.Services.Abstract;
 using PizzaPortal.Model.Models;
@@ -85,7 +84,7 @@ namespace PizzaPortal.WEB.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
-            return View();
+            return View(new RegisterViewModel());
         }
 
         [HttpPost]
@@ -310,14 +309,14 @@ namespace PizzaPortal.WEB.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgetPassword()
+        public IActionResult ForgotPassword()
         {
-            return View();
+            return View(new ForgotPasswordViewModel());
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel viewModel)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -340,17 +339,17 @@ namespace PizzaPortal.WEB.Controllers
 
                         this._logger.LogInformation("User must confirm reset password.");
 
-                        return View("ForgetPasswordConfirmation");
+                        return View("ForgotPasswordConfirmation");
                     }
                     catch (Exception ex)
                     {
                         this._logger.LogError(ex.Message);
 
-                        return View("Error", new ErrorViewModel() { ErrorTitle = "Forget Password", ErrorMessage = ex.Message });
+                        return View("Error", new ErrorViewModel() { ErrorTitle = "Forgot Password", ErrorMessage = ex.Message });
                     }
                 }
 
-                return View("ForgetPasswordConfirmation");
+                return View("ForgotPasswordConfirmation");
             }
 
             return View(viewModel);
@@ -358,7 +357,7 @@ namespace PizzaPortal.WEB.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgetPasswordConfirmation()
+        public IActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
@@ -372,7 +371,7 @@ namespace PizzaPortal.WEB.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid password reset token");
             }
 
-            return View();
+            return View(new ResetPasswordViewModel());
         }
 
         [HttpPost]
@@ -426,7 +425,7 @@ namespace PizzaPortal.WEB.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            return View();
+            return View(new ChangePasswordViewModel());
         }
 
         [HttpPost]
