@@ -15,9 +15,20 @@ You will need the following tools:
 
 Follow these steps to get your development environment set up:
 
+#### First option
+
  1. Clone the repository
  1. Open terminal and enter the command `cd PizzaPortal`
  1. Next, enter the command `docker-compose -f "docker-compose.debug.yml" up -d --build` 
+ 
+ #### Second option
+
+ 1. Clone the repository
+ 1. Open terminal and enter the command `cd PizzaPortal`
+ 1. Next, enter the command `cd PizzaPortal.WEB`
+ 1. Modify connection strings in `PizzaPortal.WEB/Installer/DatabaseInstaller` From "ConnectionStrings:PizzaConnectionDocker" to "ConnectionStrings:PizzaConnectionMssqllocal" 
+ 1. Build solution `dotnet build`
+ 1. Run app `dotnet run` 
 
 ## Technologies
 
