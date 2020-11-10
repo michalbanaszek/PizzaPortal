@@ -1,0 +1,38 @@
+version: "3.4"
+
+networks:
+  pizzanetwork:
+    name: pizzanetwork
+
+services:
+  web:
+    image: biaaly13/pizzaportalweb
+    build:
+      context: .
+      dockerfile: PizzaPortal.WEB/Dockerfile
+    ports:
+      - 44390:80
+      - 44391:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTPS_PORTS=44391
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    networks:
+      - pizzanetwork
+    volumes:
+      - ${APPDATA}\Microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
+    depends_on:
+      - mssql_local
+
+  mssql_local:
+    image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+    container_name: "mssql_local"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Qwerty!1
+      - MSSQL_PID=Express
+    ports:
+      - 1431:1433
+    networks:
+      - pizzanetwork

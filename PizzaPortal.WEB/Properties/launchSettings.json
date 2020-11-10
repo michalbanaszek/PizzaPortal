@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "PizzaPortal.WEB": {
+    "Project": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
