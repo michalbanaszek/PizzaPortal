@@ -39,6 +39,7 @@ Follow these steps to get your development environment set up:
 * Entity Framework Core SqlServer 2.2
 * Bootstrap
 * MVC
+* Docker
 
 #### Docker Hub Repository
 
