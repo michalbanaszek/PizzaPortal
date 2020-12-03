@@ -7,7 +7,9 @@ namespace PizzaPortal.WEB.Validators.Account
     {
         public ForgetPasswordValidator()
         {
-            RuleFor(x => x.Email).EmailAddress().NotEmpty();
+            RuleFor(x => x.Email)
+                .EmailAddress()
+                .NotEmpty();
         }
     }
 }

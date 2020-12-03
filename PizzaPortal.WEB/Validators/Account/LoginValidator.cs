@@ -7,8 +7,12 @@ namespace PizzaPortal.WEB.Validators.Account
     {
         public LoginValidator()
         {
-            RuleFor(x => x.Email).EmailAddress().NotEmpty();
-            RuleFor(x => x.Password).NotEmpty();
+            RuleFor(x => x.Email)
+                .EmailAddress()
+                .NotEmpty();
+
+            RuleFor(x => x.Password)
+                .NotEmpty();
         }
     }
 }

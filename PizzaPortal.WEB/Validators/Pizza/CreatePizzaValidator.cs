@@ -7,9 +7,16 @@ namespace PizzaPortal.WEB.Validators.Pizza
     {
         public CreatePizzaValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Price).NotEmpty();
-            RuleFor(x => x.CategoryId).NotEmpty().NotNull();
+            RuleFor(x => x.Name)
+                .Length(3, 20)
+                .NotEmpty();
+
+            RuleFor(x => x.Price)
+                .NotEmpty();            
+
+            RuleFor(x => x.CategoryId)
+                .NotEmpty()
+                .NotNull();
         }
     }
 }

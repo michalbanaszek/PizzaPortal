@@ -7,8 +7,13 @@ namespace PizzaPortal.WEB.Validators.Account
     {
         public ResetPasswordValidator()
         {
-            RuleFor(x => x.Password).NotEmpty();
-            RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("Passwords do not match").NotEmpty();
+            RuleFor(x => x.Password)
+                .NotEmpty();
+
+            RuleFor(x => x.ConfirmPassword)
+                .Equal(x => x.Password)
+                .WithMessage("Passwords do not match")
+                .NotEmpty();
         }
     }
 }

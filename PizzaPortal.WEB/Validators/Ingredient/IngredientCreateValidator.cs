@@ -7,7 +7,9 @@ namespace PizzaPortal.WEB.Validators.Ingredient
     {
         public IngredientCreateValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name)
+                .Length(3, 20)
+                .NotEmpty();
         }
     }
 }
