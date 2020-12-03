@@ -19,6 +19,18 @@ namespace PizzaPortal.Migrations
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Cascade;
             }
+
+            modelBuilder.Entity<Order>().Property(x => x.OrderTotal)
+                                        .HasColumnType("decimal(5,2)")
+                                        .IsRequired(true);
+
+            modelBuilder.Entity<Pizza>().Property(x => x.Price)
+                                       .HasColumnType("decimal(5,2)")
+                                       .IsRequired(true);
+
+            modelBuilder.Entity<OrderDetail>().Property(x => x.Price)
+                                     .HasColumnType("decimal(5,2)")
+                                     .IsRequired(true);
         }
 
         public DbSet<Pizza> Pizzas { get; set; }
