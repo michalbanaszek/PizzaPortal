@@ -1,7 +1,7 @@
 # Pizza Portal Web Application
 
 ## Online
-https://pizzaportalweb20210111105839.azurewebsites.net/Account/Login?ReturnUrl=%2F
+https://pizzaportalweb20210111105839.azurewebsites.net
 
 ## Getting Started
 
