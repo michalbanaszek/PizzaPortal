@@ -19,8 +19,7 @@ namespace PizzaPortal.WEB.Installers
 
                 options.Filters.Add(new AuthorizeFilter(policy));
 
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-              .AddFluentValidation(conf =>
+            }).AddFluentValidation(conf =>
               {
                   conf.LocalizationEnabled = false;
                   conf.RegisterValidatorsFromAssemblyContaining<Startup>();

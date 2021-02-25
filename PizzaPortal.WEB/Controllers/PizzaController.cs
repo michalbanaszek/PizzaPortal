@@ -23,10 +23,10 @@ namespace PizzaPortal.WEB.Controllers
         private readonly IIngredientService _ingredientService;
         private readonly IPizzaIngredientService _pizzaIngredientService;
         private readonly IMapper _mapper;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<PizzaController> _logger;
 
-        public PizzaController(IPizzaService pizzaService, ICategoryService categoryService, IIngredientService ingredientService, IPizzaIngredientService pizzaIngredientService, IMapper mapper, IHostingEnvironment hostingEnvironment, ILogger<PizzaController> logger)
+        public PizzaController(IPizzaService pizzaService, ICategoryService categoryService, IIngredientService ingredientService, IPizzaIngredientService pizzaIngredientService, IMapper mapper, IWebHostEnvironment hostingEnvironment, ILogger<PizzaController> logger)
         {
             this._pizzaService = pizzaService;
             this._categoryService = categoryService;
