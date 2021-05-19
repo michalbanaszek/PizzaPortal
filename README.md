@@ -36,10 +36,9 @@ Follow these steps to get your development environment set up:
 
 ## Technologies
 
-* .NET Core 2.2
-* ASP.NET Core 2.2
-* Entity Framework Core 2.2
-* Entity Framework Core SqlServer 2.2
+* .NET Core 5.0
+* Entity Framework Core 5.0
+* Entity Framework Core SqlServer 5.0
 * Bootstrap
 * MVC
 * Docker
