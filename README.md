@@ -11,7 +11,7 @@ Use these instructions to get the project up and running
 You will need the following tools:
 
 * [Visual Studio Code](https://code.visualstudio.com/)
-* [.NET Core SDK 2.2](https://www.microsoft.com/net/download/dotnet-core/2.2)
+* [.NET Core SDK 5.0](https://www.microsoft.com/net/download/dotnet-core/5.0)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ### Setup
