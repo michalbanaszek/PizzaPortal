@@ -24,4 +24,4 @@ jobs:
   
     - name: docker build
       run: |
-        docker build ./PizzaPortal.WEB/Dockerfile -t biaaly13/pizzaportalweb
+        docker build PizzaPortal.WEB/Dockerfile -t biaaly13/pizzaportalweb
