@@ -21,6 +21,8 @@ Follow these steps to get your development environment set up:
  1. Open terminal and enter the command `cd PizzaPortal`
  1. Next, enter the command `cd PizzaPortal.WEB` 
  1. Modify connection strings in `PizzaPortal.WEB/Installer/DatabaseInstaller` from "DockerConnection" to "DefaultConnection"  
+ 1. Generate localhost certificate for redirect HTTPS, open powershell and enter the command `dotnet dev-certs https -ep     $env:USERPROFILE\.aspnet\https\PizzaPortal.WEB.pfx -p <Password>`
+ 1. Next, enter the command `dotnet dev-certs https --trust`, click yes if open dialog is show
  3. Build solution `dotnet build`
  4. Run app `dotnet run` 
  
