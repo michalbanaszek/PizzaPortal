@@ -20,9 +20,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal      
-
-    - uses: action/checkout@v2
+      run: dotnet test --no-build --verbosity normal   
+  
     - name: docker build
       run: |
         docker build ./PizzaPortal.WEB -t biaaly13/pizzaportalweb
