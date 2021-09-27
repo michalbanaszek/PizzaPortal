@@ -23,8 +23,10 @@ Follow these steps to get your development environment set up:
  1. Modify connection strings in `PizzaPortal.WEB/Installer/DatabaseInstaller` from "DockerConnection" to "DefaultConnection"  
  1. Generate localhost certificate for redirect HTTPS, open powershell and enter the command `dotnet dev-certs https -ep     $env:USERPROFILE\.aspnet\https\PizzaPortal.WEB.pfx -p <Password>`
  1. Next, enter the command `dotnet dev-certs https --trust`, click yes if open dialog is show
- 3. Build solution `dotnet build`
- 4. Run app `dotnet run` 
+ 1. Next, generate key-value pair for certificate password to secret.json file, enter the command `dotnet user-secrets set "Kestrel:Certificates:Development:Password" "<Password>"` 
+ 1. Next, generate key-value pair for connectingString to secret.json file, enter the command `dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=<YourLocalSQLInstance>;Database=<DatabaseName>;Trusted_Connection=True;MultipleActiveResultSets=true"` 
+ 4. Build solution `dotnet build`
+ 5. Run app `dotnet run` 
  
  #### Second option - using docker
 
