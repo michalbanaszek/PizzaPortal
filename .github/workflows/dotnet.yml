@@ -23,4 +23,4 @@ jobs:
 #       run: dotnet test --no-build --verbosity normal     
     - name: docker build
       run: |
-        docker build -f ./PizzaPortal.Web/Dockerfile . -t biaaly13/pizzaportalweb
+        docker build -f ./ . -t biaaly13/pizzaportalweb
