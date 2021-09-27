@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-    <UserSecretsId>38d54f53-1030-4437-be3f-20270cee7ac4</UserSecretsId>     
+    <UserSecretsId>38d54f53-1030-4437-be3f-20270cee7ac4</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>     
   </PropertyGroup>
 
 
@@ -13,6 +14,7 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 

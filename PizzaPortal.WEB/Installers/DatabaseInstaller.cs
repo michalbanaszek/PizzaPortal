@@ -11,7 +11,7 @@ namespace PizzaPortal.WEB.Installers
         {
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionStrings:PizzaConnectionMssqllocal"]);
+                options.UseSqlServer(configuration["ConnectionStrings:DockerConnection"]);
             });
         }
     }

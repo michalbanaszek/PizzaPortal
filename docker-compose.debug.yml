@@ -10,17 +10,18 @@ services:
     build:
       context: .
       dockerfile: PizzaPortal.WEB/Dockerfile
+    restart: on-failure
     ports:
-      - 44390:80
-      - 44391:443
+      - 8080:80
+      - 8081:443
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTPS_PORTS=44391
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_HTTPS_PORTS=8081
     networks:
       - pizzanetwork
     volumes:
-      - ${APPDATA}\Microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${APPDATA}\Microsoft\UserSecrets\38d54f53-1030-4437-be3f-20270cee7ac4\:/root/.microsoft/usersecrets/38d54f53-1030-4437-be3f-20270cee7ac4
       - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
     depends_on:
       - mssql_local
@@ -28,6 +29,7 @@ services:
   mssql_local:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
     container_name: "mssql_local"
+    restart: on-failure
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Qwerty!1
