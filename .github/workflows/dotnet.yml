@@ -10,18 +10,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2    
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 5.0.x        
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore      
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore      
     - name: Test
-      run: dotnet test --no-build --verbosity normal   
-  
+      run: dotnet test --no-build --verbosity normal     
     - name: docker build
       run: |
-        docker build ./PizzaPortal.WEB/Dockerfile -t biaaly13/pizzaportalweb .
+        docker build -f ./PizzaPortal.Web/Dockerfile . -t biaaly13/pizzaportalweb
