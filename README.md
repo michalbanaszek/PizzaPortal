@@ -32,7 +32,7 @@ Follow these steps to get your development environment set up:
 
  1. Clone the repository
  1. Open terminal and enter the command `cd PizzaPortal`  
- 1. Next, enter the command `docker-compose up --build` 
+ 1. Next, enter the command `docker-compose -f "docker-compose.debug.yml" up --build` 
 
 ## Technologies
 
