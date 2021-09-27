@@ -1,8 +1,5 @@
 # Pizza Portal Web Application
 
-## Online
-https://pizzaportalweb20210111105839.azurewebsites.net
-
 ## Getting Started
 
 Use these instructions to get the project up and running
@@ -23,16 +20,15 @@ Follow these steps to get your development environment set up:
  1. Clone the repository
  1. Open terminal and enter the command `cd PizzaPortal`
  1. Next, enter the command `cd PizzaPortal.WEB` 
- 1. Build solution `dotnet build`
- 1. Run app `dotnet run` 
+ 1. Modify connection strings in `PizzaPortal.WEB/Installer/DatabaseInstaller` from "DockerConnection" to "DefaultConnection"  
+ 3. Build solution `dotnet build`
+ 4. Run app `dotnet run` 
  
  #### Second option - using docker
 
  1. Clone the repository
- 1. Open terminal and enter the command `cd PizzaPortal`
- 1. Modify connection strings in `PizzaPortal.WEB/Installer/DatabaseInstaller` from "PizzaConnectionMssqllocal" to "PizzaConnectionDocker" 
- 1. Next, enter the command `docker-compose -f "docker-compose.debug.yml" up -d --build` 
- 1. Retry command if web is exited
+ 1. Open terminal and enter the command `cd PizzaPortal`  
+ 1. Next, enter the command `docker-compose up --build` 
 
 ## Technologies
 
